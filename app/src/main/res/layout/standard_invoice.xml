@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+    <TextView
+        android:id="@+id/layoutLabel1"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="128dp"
+        android:background="#31AF54"
+        android:text="Contact Info:"
+        android:textColor="#EFE8E8"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/layoutLabel4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:text="Billed to:"
+        android:textColor="#013203"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLabel1" />
+
+    <TextView
+        android:id="@+id/receiverAddress"
+        android:layout_width="128dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="26dp"
+        android:text="123 Chippenham Road"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiverName" />
+
+    <TextView
+        android:id="@+id/receiverName"
+        android:layout_width="134dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="12dp"
+        android:text="John Smith"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLabel4" />
+
+    <TextView
+        android:id="@+id/nameLbl2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="64dp"
+        android:text="001"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/layoutLabel2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameLbl3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="90dp"
+        android:text="12/12/12"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/layoutLabel2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/receiverPostcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="2dp"
+        android:text="FS332SS"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiverAddress" />
+
+    <TextView
+        android:id="@+id/receiverPhoneNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:text="0723572124"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiverPostcode" />
+
+    <TextView
+        android:id="@+id/userAddress"
+        android:layout_width="134dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="272dp"
+        android:text="123 Southcroft Road"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+    <TextView
+        android:id="@+id/userPostcode"
+        android:layout_width="135dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="272dp"
+        android:text="B345EF"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAddress" />
+
+    <TextView
+        android:id="@+id/companyCode"
+        android:layout_width="135dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="274dp"
+        android:text="1241245"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPostcode" />
+
+    <TextView
+        android:id="@+id/userPhoneNo"
+        android:layout_width="135dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="274dp"
+        android:text="0784250392"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/companyCode" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="135dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="272dp"
+        android:layout_marginTop="16dp"
+        android:text="Nedyalko Krastev"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLabel1" />
+
+    <TextView
+        android:id="@+id/layoutLabel3"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="216dp"
+        android:background="#31AF54"
+        android:text="Work Done/Items:"
+        android:textColor="#F3EDED"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLabel1" />
+
+    <TextView
+        android:id="@+id/layoutLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="12dp"
+        android:text="Invoice"
+        android:textColor="#045936"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/layoutLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Invoice #:"
+        android:textColor="#013203"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/layoutLabel5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="90dp"
+        android:text="Issue Date:"
+        android:textColor="#013203"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/userLogo"
+        android:layout_width="61dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#101010"
+        android:foregroundTint="#171616"
+        android:tint="#131313"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.782"
+        app:layout_constraintStart_toEndOf="@+id/layoutLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

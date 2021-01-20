@@ -20,6 +20,10 @@
             android:name=".PickInvoice"
             android:parentActivityName=".MainActivity" >
         </activity>
+        <activity
+            android:name=".StandardInvoice"
+            android:parentActivityName=".PickInvoice" >
+        </activity>
     </application>
 
 </manifest>
