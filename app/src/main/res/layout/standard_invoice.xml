@@ -101,7 +101,7 @@
         android:id="@+id/userAddress"
         android:layout_width="134dp"
         android:layout_height="48dp"
-        android:layout_marginStart="272dp"
+        android:layout_marginStart="260dp"
         android:text="123 Southcroft Road"
         android:textAlignment="textEnd"
         android:textSize="18sp"
@@ -112,7 +112,7 @@
         android:id="@+id/userPostcode"
         android:layout_width="135dp"
         android:layout_height="31dp"
-        android:layout_marginStart="272dp"
+        android:layout_marginStart="260dp"
         android:text="B345EF"
         android:textAlignment="textEnd"
         android:textSize="18sp"
@@ -123,7 +123,7 @@
         android:id="@+id/companyCode"
         android:layout_width="135dp"
         android:layout_height="31dp"
-        android:layout_marginStart="274dp"
+        android:layout_marginStart="260dp"
         android:text="1241245"
         android:textAlignment="textEnd"
         android:textSize="18sp"
@@ -134,7 +134,7 @@
         android:id="@+id/userPhoneNo"
         android:layout_width="135dp"
         android:layout_height="31dp"
-        android:layout_marginStart="274dp"
+        android:layout_marginStart="260dp"
         android:text="0784250392"
         android:textAlignment="textEnd"
         android:textSize="18sp"
@@ -145,7 +145,7 @@
         android:id="@+id/userName"
         android:layout_width="135dp"
         android:layout_height="50dp"
-        android:layout_marginStart="272dp"
+        android:layout_marginStart="260dp"
         android:layout_marginTop="16dp"
         android:text="Nedyalko Krastev"
         android:textAlignment="textEnd"
@@ -210,11 +210,20 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#101010"
         android:foregroundTint="#171616"
-        android:tint="#131313"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.782"
         app:layout_constraintStart_toEndOf="@+id/layoutLabel"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TableLayout
+        android:id="@+id/standard_invoice_table"
+        android:layout_width="329dp"
+        android:layout_height="239dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLabel3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
