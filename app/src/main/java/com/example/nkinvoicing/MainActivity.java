@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     public void PickInvoiceType (View view){
-        Toast.makeText(this, "haha", Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(this, "haha", Toast.LENGTH_SHORT).show();*/
         Intent it = new Intent(this,PickInvoice.class);
         startActivity(it);
     }
