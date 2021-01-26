@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">NK Invoicing</string>
+    <string name="user_company_name">NK Invoicing</string>
+    <string name="receiver_company_name">Duners are awesome Co.</string>
+    <string name="user_address">123 Southrcroft Road</string>
+    <string name="receiver_address">Some Street, idkman</string>
+    <string name="receiver_postcode">B244AA</string>
+    <string name="user_postcode">L12 3A</string>
+    <string name="user_tel">0123 123 123</string>
+    <string name="receiver_tel">0321 321 321</string>
+    <string name="user_company_id">1231242</string>
+    <string name="receiver_company_id">12214124</string>
+    <string name="invoice_no">0001</string>
+    <string name="issue_date">12/12/21</string>
+    <string name="due_date">21/21/21</string>
 </resources>

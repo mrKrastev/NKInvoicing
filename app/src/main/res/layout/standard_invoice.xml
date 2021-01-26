@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="100dp"
                         android:layout_marginTop="104dp"
-                        android:text="0001"
+                        android:text="@string/invoice_no"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginBottom="64dp"
-                        android:text="12/12/21"
+                        android:text="@string/due_date"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView2" />
@@ -184,16 +184,16 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="70dp"
-                        android:layout_height="40dp"
+                        android:layout_width="60dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginBottom="32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView5"
                         app:srcCompat="@drawable/unpaidicon" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="1dp"
                         android:layout_marginEnd="1dp"
@@ -229,7 +229,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="10dp"
-                                android:text="ObichamDuneri Co."
+                                android:text="@string/user_company_name"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -239,7 +239,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="16 Some Address Road"
+                                android:text="@string/user_address"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userCompanyNamelbl" />
@@ -249,7 +249,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="B223FG"
+                                android:text="@string/user_postcode"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userAddresslbl" />
@@ -259,7 +259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="0351 213 212"
+                                android:text="@string/user_tel"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userPostcodelbl" />
@@ -270,7 +270,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
-                                android:text="124215125"
+                                android:text="@string/user_company_id"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userPostcodelbl" />
@@ -279,7 +279,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="59dp"
+                            android:layout_marginStart="60dp"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout"
                             app:layout_constraintTop_toTopOf="parent">
 
@@ -300,7 +300,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="16 Some Address Road"
+                                android:text="@string/receiver_address"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverName" />
@@ -310,7 +310,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="B223FG"
+                                android:text="@string/receiver_postcode"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverAddress" />
@@ -320,7 +320,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="0351 213 212"
+                                android:text="@string/receiver_tel"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverPostcode" />
@@ -330,7 +330,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="(optional id)"
+                                android:text="@string/receiver_company_id"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userTelLbl2" />
@@ -341,7 +341,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
-                                android:text="ObichamDuneri Co."
+                                android:text="@string/receiver_company_name"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
