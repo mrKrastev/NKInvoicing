@@ -52,7 +52,7 @@ public class StandardInvoice extends AppCompatActivity {
         tv2.setTextColor(0xFD206E1A);
         tableHeaderFields.addView(tv2);
         TextView tv3 = new TextView(this);
-        tv3.setText(" Total ");
+        tv3.setText(" Amount (£) ");
         tv3.setWidth(230);
         tv3.setTextColor(0xFD206E1A);
         tv3.setGravity(Gravity.RIGHT);
@@ -143,7 +143,7 @@ public class StandardInvoice extends AppCompatActivity {
         NETrow.setGravity(Gravity.RIGHT);
         NETrow.setMinimumHeight(100);
         TextView NETlabel = new TextView(this);
-        NETlabel.setText(" NET TOTAL: ");
+        NETlabel.setText("TOTAL: ");
         NETlabel.setTextColor(Color.WHITE);
         NETlabel.setBackgroundColor(0xFD206E1A);
         NETlabel.setGravity(Gravity.LEFT);
