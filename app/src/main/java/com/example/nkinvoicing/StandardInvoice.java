@@ -1,9 +1,12 @@
 package com.example.nkinvoicing;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,13 +20,63 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Math.round;
 
 public class StandardInvoice extends AppCompatActivity {
+
+    Intent contactsEditIntent;
+    Contacts contacts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.standard_invoice);
-        init();
+        contacts = (Contacts) getIntent().getSerializableExtra("Contacts");
+        if(contacts==null){
+                contacts = new Contacts(getString(R.string.user_company_name),
+                getString(R.string.user_address),
+                getString(R.string.user_postcode),
+                getString(R.string.user_tel),
+                getString(R.string.user_company_id),
+                getString(R.string.user_email),
+                getString(R.string.receiver_company_name),
+                getString(R.string.receiver_address),
+                getString(R.string.receiver_postcode),
+                getString(R.string.receiver_tel),
+                getString(R.string.receiver_company_id),
+                getString(R.string.receiver_email));
+        }
+        createContacts(contacts);
+        createTable();
+        contactsEditIntent = new Intent(this,EditContacts.class);
+        contactsEditIntent.putExtra("Contacts",contacts);
     }
-    public void init() {
+    public void createContacts(Contacts c){
+        TextView userCompany = findViewById(R.id.userCompanyNamelbl);
+        TextView userAddress = findViewById(R.id.userAddresslbl);
+        TextView userPostcode = findViewById(R.id.userPostcodelbl);
+        TextView userTel = findViewById(R.id.userTelLbl);
+        TextView userCompanyID = findViewById(R.id.userCompanyID);
+        TextView userEmail = findViewById(R.id.userEmailLbl);
+        //--------------------------------------------------------------------------
+        TextView receiverCompany = findViewById(R.id.receiverName);
+        TextView receiverAddress = findViewById(R.id.receiverAddress);
+        TextView receiverPostcode = findViewById(R.id.receiverPostcode);
+        TextView receiverTel = findViewById(R.id.receiverTelLbl);
+        TextView receiverCompanyID = findViewById(R.id.receiverCompanyID);
+        TextView receiverEmail = findViewById(R.id.receiverEmailLbl);
+        //~~~~~~~~~~~~~~~~~~~~~~~~Setting Text from Contacts Object ~~~~~~~~~~~~~~~~~~~~~~
+        userCompany.setText(c.userCompany);
+        userAddress.setText(c.userAddress);
+        userPostcode.setText(c.userPostcode);
+        userTel.setText(c.userTel);
+        userCompanyID.setText(c.userCompanyID);
+        userEmail.setText(c.userEmail);
+        //----------------------------------------------------
+        receiverCompany.setText(c.receiverCompany);
+        receiverAddress.setText(c.receiverAddress);
+        receiverPostcode.setText(c.receiverPostcode);
+        receiverTel.setText(c.receiverTel);
+        receiverCompanyID.setText(c.receiverCompanyID);
+        receiverEmail.setText(c.receiverEmail);
+    }
+    public void createTable() {
         DecimalFormat f = new DecimalFormat("##.00");
         Double GrossValue=0.00;
         TableLayout stk = (TableLayout) findViewById(R.id.standard_invoice_table);
@@ -58,6 +111,8 @@ public class StandardInvoice extends AppCompatActivity {
         tv3.setGravity(Gravity.RIGHT);
         tableHeaderFields.addView(tv3);
         stk.addView(tableHeaderFields);
+
+        //~~~~~~~~~~ Populate table ~~~~~~~~~~~~~~~~~
         for (int i = 0; i < 5; i++) {
             TableRow tbrow = new TableRow(this);
             tbrow.setMinimumHeight(150);
@@ -156,5 +211,10 @@ public class StandardInvoice extends AppCompatActivity {
         NETrow.addView(NETvalue);
         stk.addView(NETrow);
 
+    }
+
+    public void editContacts(View view){
+
+        startActivity(contactsEditIntent);
     }
 }

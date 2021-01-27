@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cancelButton"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#434242">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+        <EditText
+            android:id="@+id/receiverCompanyInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Company Name"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_company_name"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/receiverAddressInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_address"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverCompanyInput" />
+
+        <EditText
+            android:id="@+id/receiverPostcodeInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Postcode"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_postcode"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverAddressInput" />
+
+        <EditText
+            android:id="@+id/receiverTelNoInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Phone Number"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_tel"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverPostcodeInput" />
+
+        <EditText
+            android:id="@+id/receiverCompIDInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Company ID"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_company_id"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverTelNoInput" />
+
+        <EditText
+            android:id="@+id/receiverEmailnput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/receiver_email"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverCompIDInput" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Contact Details"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="68dp"
+        android:text="Your Details:"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="20dp"
+        android:text="Receiver Details:"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <EditText
+            android:id="@+id/userTelNoInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Phone Number"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_tel"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userPostcodeInput" />
+
+        <EditText
+            android:id="@+id/userCompanyIDInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Company ID"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_company_id"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userTelNoInput" />
+
+        <EditText
+            android:id="@+id/userEmailInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_email"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userCompanyIDInput" />
+
+        <EditText
+            android:id="@+id/userPostcodeInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Postcode"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_postcode"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userAddressInput" />
+
+        <EditText
+            android:id="@+id/userCompanyInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Company Name"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_company_name"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/userAddressInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="@string/user_address"
+            android:textColor="#D3D1D1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userCompanyInput" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="50dp"
+        android:onClick="updateContacts"
+        android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cancelBtn" />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="50dp"
+        android:onClick="cancelEditContacts"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

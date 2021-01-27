@@ -24,6 +24,10 @@
             android:name=".StandardInvoice"
             android:parentActivityName=".PickInvoice" >
         </activity>
+        <activity
+            android:name=".EditContacts"
+            >
+        </activity>
     </application>
 
 </manifest>
