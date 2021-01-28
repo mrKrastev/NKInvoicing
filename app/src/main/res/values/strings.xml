@@ -6,7 +6,7 @@
     <string name="receiver_address">Receiver Address Here</string>
     <string name="receiver_postcode">Your Postcode Here</string>
     <string name="user_postcode">Receiver Postcode Here</string>
-    <string name="user_tel">Your Company phone number</string>
+    <string name="user_tel">Your phone number</string>
     <string name="receiver_tel">Receiver phone number</string>
     <string name="user_company_id">Your Company ID </string>
     <string name="receiver_company_id">His company id(optiona)</string>

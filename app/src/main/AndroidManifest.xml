@@ -22,12 +22,9 @@
         </activity>
         <activity
             android:name=".StandardInvoice"
-            android:parentActivityName=".PickInvoice" >
-        </activity>
-        <activity
-            android:name=".EditContacts"
-            >
-        </activity>
+            android:parentActivityName=".PickInvoice" />
+        <activity android:name=".EditContacts" />
+        <activity android:name=".InvoiceCreator" />
     </application>
 
 </manifest>

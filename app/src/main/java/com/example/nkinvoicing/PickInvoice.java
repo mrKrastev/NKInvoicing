@@ -13,7 +13,7 @@ public class PickInvoice extends AppCompatActivity {
         setContentView(R.layout.pick_invoice_type);
     }
 public void selectInvoice (View view){
-        Intent it = new Intent(this,StandardInvoice.class);
+        Intent it = new Intent(this,InvoiceCreator.class);
         startActivity(it);
 }
 }
