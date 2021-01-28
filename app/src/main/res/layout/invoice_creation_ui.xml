@@ -203,7 +203,7 @@
                 android:layout_marginTop="11dp"
                 android:ems="10"
                 android:hint="Invoice No eg. 0001"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:textColor="#5CD60F"
                 android:textColorHint="#4BAC30"
                 app:layout_constraintStart_toStartOf="parent"
@@ -215,8 +215,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:hint="Issue Date eg 12/12/21"
-                android:inputType="date"
+                android:hint="Issue Date eg. 21/12/2021"
+                android:inputType="text"
+                android:minWidth="227dp"
                 android:textColor="#5CD60F"
                 android:textColorHint="#4BAC30"
                 app:layout_constraintStart_toStartOf="parent"
@@ -228,8 +229,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:hint="Due Date eg. 01/01/22"
-                android:inputType="date"
+                android:hint="Due Date eg. 01/01/2022"
+                android:inputType="text"
+                android:minWidth="227dp"
                 android:textColor="#5CD60F"
                 android:textColorHint="#4BAC30"
                 app:layout_constraintStart_toStartOf="parent"
@@ -357,6 +359,31 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/issueDateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="40dp"
+                android:clickable="true"
+                android:onClick="pickIssueDate"
+                app:backgroundTint="#252323"
+                app:layout_constraintStart_toEndOf="@+id/issueDateInput"
+                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:srcCompat="@drawable/icon_calendar_green" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/dueDateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:clickable="true"
+                android:onClick="pickDueDate"
+                app:backgroundTint="#252323"
+                app:layout_constraintStart_toEndOf="@+id/dueDateInput"
+                app:layout_constraintTop_toBottomOf="@+id/issueDateBtn"
+                app:srcCompat="@drawable/icon_calendar_green" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
