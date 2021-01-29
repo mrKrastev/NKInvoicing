@@ -31,7 +31,7 @@ public class EditContacts extends AppCompatActivity {
         EditText receiverAddress = findViewById(R.id.receiverAddressInput);
         EditText receiverPostcode = findViewById(R.id.receiverPostcodeInput);
         EditText receiverTel = findViewById(R.id.receiverTelNoInput);
-        EditText receiverCompanyID = findViewById(R.id.receiverCompanyInput);
+        EditText receiverCompanyID = findViewById(R.id.receiverCompIDInput);
         EditText receiverEmail = findViewById(R.id.receiverEmailnput);
         //~~~~~~~~~~~~~~~~~~~~~~~~Setting Text from Contacts Object ~~~~~~~~~~~~~~~~~~~~~~
         userCompany.setText(c.userCompany);

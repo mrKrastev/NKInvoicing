@@ -15,10 +15,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/receiverConstr"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="64dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Next"
+            android:background="#000000"
+            android:textColor="#68AEDA"
+                android:onClick="nextInvoiceStage"
+            />
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/receiverConstr"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Cancel"
+                android:background="#000000"
+                android:textColor="#68AEDA"
+                android:onClick="returnToPick"
+                />
 
             <TextView
                 android:id="@+id/textView18"
@@ -244,7 +274,6 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="1dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18">
@@ -344,7 +373,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:ellipsize="none"
                     android:ems="10"
                     android:hint="Company Name"

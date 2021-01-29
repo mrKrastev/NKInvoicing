@@ -46,6 +46,24 @@ public class Contacts implements Serializable {
         this.receiverEmail = receiverEmail;
     }
 
+    @Override
+    public String toString() {
+        return "Contacts{" +
+                "userCompany='" + userCompany + '\'' +
+                ", userAddress='" + userAddress + '\'' +
+                ", userPostcode='" + userPostcode + '\'' +
+                ", userTel='" + userTel + '\'' +
+                ", userCompanyID='" + userCompanyID + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", receiverCompany='" + receiverCompany + '\'' +
+                ", receiverAddress='" + receiverAddress + '\'' +
+                ", receiverPostcode='" + receiverPostcode + '\'' +
+                ", receiverTel='" + receiverTel + '\'' +
+                ", receiverCompanyID='" + receiverCompanyID + '\'' +
+                ", receiverEmail='" + receiverEmail + '\'' +
+                '}';
+    }
+
     public String getUserCompany() {
         return userCompany;
     }

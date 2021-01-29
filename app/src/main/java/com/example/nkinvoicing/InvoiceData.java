@@ -8,16 +8,28 @@ public class InvoiceData implements Serializable {
     Contacts contacts;
     List <TableItem> tbItems;
     String invoiceNo;
-    Date invoiceDate;
-    Date dueDate;
+    String invoiceDate;
+    String dueDate;
     Boolean invoicePaid=false;
 
-    public InvoiceData(Contacts contacts, List<TableItem> tbItems, String invoiceNo, Date invoiceDate, Date dueDate) {
+    public InvoiceData(Contacts contacts, List<TableItem> tbItems, String invoiceNo, String invoiceDate, String dueDate) {
         this.contacts = contacts;
         this.tbItems = tbItems;
         this.invoiceNo = invoiceNo;
         this.invoiceDate = invoiceDate;
         this.dueDate = dueDate;
+    }
+
+    @Override
+    public String toString() {
+        return "InvoiceData{" +
+                "contacts=" + contacts.toString() +
+                ", tbItems=" + tbItems +
+                ", invoiceNo='" + invoiceNo + '\'' +
+                ", invoiceDate='" + invoiceDate + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                ", invoicePaid=" + invoicePaid +
+                '}';
     }
 
     public Contacts getContacts() {
@@ -46,19 +58,19 @@ public class InvoiceData implements Serializable {
         this.invoiceNo = invoiceNo;
     }
 
-    public Date getInvoiceDate() {
+    public String getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(Date invoiceDate) {
+    public void setInvoiceDate(String invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 
-    public Date getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
