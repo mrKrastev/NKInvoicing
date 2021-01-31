@@ -115,14 +115,16 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                 String.valueOf(invoiceNo.getText()),
                 String.valueOf(issueDate.getText()),
                 String.valueOf(dueDate.getText()));
-
-        Log.i("Invoice Object: ", invObj.toString());
+        //send object accross
+        Intent passInvoiceData = new Intent(this,StandardTableCreator.class);
+        passInvoiceData.putExtra("InvoiceData",invObj);
+        startActivity(passInvoiceData);
 
     }
 
     public void returnToPick (View view){
 
-        Intent it = new Intent(this,StandardInvoice.class);
+        Intent it = new Intent(this,PickInvoice.class);
         startActivity(it);
     }
 }

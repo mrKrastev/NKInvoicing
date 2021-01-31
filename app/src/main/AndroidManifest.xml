@@ -25,6 +25,7 @@
             android:parentActivityName=".PickInvoice" />
         <activity android:name=".EditContacts" />
         <activity android:name=".InvoiceCreator" />
+        <activity android:name=".StandardTableCreator" />
     </application>
 
 </manifest>
