@@ -19,18 +19,21 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class StandardTableCreator extends AppCompatActivity {
 
    InvoiceData invData;
    Intent showInvoice;
    int RowCounter=1;
-   List <TableItem> items;
+   HashMap<Integer,TableItem> items;
     LinearLayout main;
     ConstraintLayout mainConstr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        items = new HashMap<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table_input_ui);
         main = (LinearLayout) findViewById(R.id.mainLayout);
@@ -41,6 +44,7 @@ public class StandardTableCreator extends AppCompatActivity {
         Button addMore=(Button) findViewById(R.id.addMoreBtn);
         addMore.setOnClickListener(new View.OnClickListener() {public void onClick(View v) {
             generateItem();
+            Toast.makeText(StandardTableCreator.this, "New Item Added", Toast.LENGTH_SHORT).show();
         }});
     }
     public void generateItem(){
@@ -58,7 +62,7 @@ public class StandardTableCreator extends AppCompatActivity {
 
         Button collapseRowBtn = new Button(this);
         collapseRowBtn.setText("Table item "+RowCounter+" ▼");
-        collapseRowBtn.setTextColor(Color.rgb(232, 130, 2));
+        collapseRowBtn.setTextColor(Color.rgb(233, 159, 89));
         collapseRowBtn.setBackgroundColor(Color.TRANSPARENT);
         collapseRowBtn.setTextSize(26);
         collapseRowBtn.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
@@ -127,12 +131,15 @@ public class StandardTableCreator extends AppCompatActivity {
         main.addView(qtyInp);
         main.addView(price);
         main.addView(priceInp);
+
+        items.put(RowCounter,new TableItem(null,null,0,null));
+
         RowCounter=RowCounter+1;
     }
     public TextView getLabel (String labelName){
         TextView label = new TextView(this);
         label.setText(labelName);
-        label.setTextColor(Color.GREEN);
+        label.setTextColor(Color.rgb(223, 152, 137));
         label.setTextSize(24);
         label.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
         label.setGravity(Gravity.CENTER);
@@ -141,7 +148,7 @@ public class StandardTableCreator extends AppCompatActivity {
     public EditText getInput (String inputTag){
         EditText input = new EditText(this);
         input.setTag(inputTag);
-        input.setTextColor(Color.CYAN);
+        input.setTextColor(Color.rgb(169, 214, 208));
         input.setTextSize(24);
         input.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
         input.setHeight(ActionBar.LayoutParams.WRAP_CONTENT);
@@ -184,6 +191,46 @@ public class StandardTableCreator extends AppCompatActivity {
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.setDuration(duration);
         valueAnimator.start();
+    }
+
+    public InvoiceData generateInvoiceData(){
+
+        for (Integer i: items.keySet() ) {
+            String descriptionName = "descriptionInput "+i;
+            EditText description = (EditText) main.findViewWithTag(descriptionName);
+
+            String dateName = "dateInput "+i;
+            EditText date = (EditText) main.findViewWithTag(dateName);
+
+            String qtyName = "qtyInput "+i;
+            EditText qty = (EditText) main.findViewWithTag(qtyName);
+            if(String.valueOf(qty.getText()).equals("")){
+                qty.setText("0");
+            }
+
+            String priceName = "priceInput "+i;
+            EditText price = (EditText) main.findViewWithTag(priceName);
+            if(String.valueOf(price.getText()).equals("")){
+                price.setText("0");
+            }
+
+            items.get(i).setDescription(String.valueOf(description.getText()));
+            items.get(i).setDate(String.valueOf(date.getText()));
+            items.get(i).setQuantity(Integer.parseInt(String.valueOf(qty.getText())));
+            items.get(i).setPrice(Double.parseDouble(String.valueOf(price.getText())));
+
+            invData.addTableItem(items.get(i));
+
+            Toast.makeText(this, invData.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        return invData;
+    }
+
+    public void showInvoice(View v){
+        Intent i = new Intent(this,StandardInvoice.class);
+        i.putExtra("InvoiceData", generateInvoiceData());
+        //startActivity(i);
     }
 }
 

@@ -5,7 +5,7 @@
     android:id="@+id/mainConstraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181B2B">
+    android:background="#302F2F">
 
     <TextView
         android:id="@+id/textView13"
@@ -27,8 +27,9 @@
         android:layout_weight="0"
         android:background="#000000"
         android:foregroundGravity="bottom"
+        android:onClick="showInvoice"
         android:text="Generate Invoice"
-        android:textColor="#68AEDA"
+        android:textColor="#9ED3B4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -42,8 +43,9 @@
         android:layout_weight="0"
         android:background="#000000"
         android:foregroundGravity="bottom"
+        android:onClick="showInvoice"
         android:text="Add Another Item"
-        android:textColor="#68AEDA"
+        android:textColor="#C69F81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -52,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="110dp"
-        android:background="#37302E"
+        android:background="#434242"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

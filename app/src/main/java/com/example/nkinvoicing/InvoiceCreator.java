@@ -111,7 +111,6 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
 
         //Create invoice Object
         InvoiceData invObj = new InvoiceData(contacts,
-                tableItems,
                 String.valueOf(invoiceNo.getText()),
                 String.valueOf(issueDate.getText()),
                 String.valueOf(dueDate.getText()));

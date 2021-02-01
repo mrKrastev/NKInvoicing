@@ -1,20 +1,22 @@
 package com.example.nkinvoicing;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class InvoiceData implements Serializable {
     Contacts contacts;
-    List <TableItem> tbItems;
+    List<TableItem> tbItems;
     String invoiceNo;
     String invoiceDate;
     String dueDate;
     Boolean invoicePaid=false;
 
-    public InvoiceData(Contacts contacts, List<TableItem> tbItems, String invoiceNo, String invoiceDate, String dueDate) {
+    public InvoiceData(Contacts contacts, String invoiceNo, String invoiceDate, String dueDate) {
         this.contacts = contacts;
-        this.tbItems = tbItems;
+        this.tbItems = new ArrayList<>();
         this.invoiceNo = invoiceNo;
         this.invoiceDate = invoiceDate;
         this.dueDate = dueDate;
@@ -39,12 +41,15 @@ public class InvoiceData implements Serializable {
     public void addTableItem(TableItem tbitem){
         tbItems.add(tbitem);
     }
+
     public void removeTableItem(TableItem tbitem){
         tbItems.remove(tbitem);
     }
+
     public List<TableItem> getTableItems(){
         return tbItems;
     }
+
 
     public void setContacts(Contacts contacts) {
         this.contacts = contacts;

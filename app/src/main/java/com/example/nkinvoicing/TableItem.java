@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TableItem implements Serializable {
     String description;
-    Date date;
+    String date;
     int quantity;
     Double price;
 
@@ -17,11 +17,11 @@ public class TableItem implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -45,13 +45,21 @@ public class TableItem implements Serializable {
         return price*quantity;
     }
 
+    @Override
+    public String toString() {
+        return "TableItem{" +
+                "description='" + description + '\'' +
+                ", date='" + date + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 
-
-
-    public TableItem(String description, Date date, int quantity, Double price) {
+    public TableItem(String description, String date, int quantity, Double price) {
         this.description = description;
         this.date = date;
         this.quantity = quantity;
         this.price = price;
     }
+
 }
