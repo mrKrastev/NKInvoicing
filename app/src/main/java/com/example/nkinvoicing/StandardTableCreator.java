@@ -5,14 +5,11 @@ import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -37,12 +34,12 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
    Intent showInvoice;
    int RowCounter=1;
    int inputChangeIdentifier;
-   HashMap<Integer,TableItem> items;
+   HashMap<Integer,TableItem> hsitems;
     LinearLayout main;
     ConstraintLayout mainConstr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        items = new HashMap<>();
+        hsitems = new HashMap();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table_input_ui);
         main = (LinearLayout) findViewById(R.id.mainLayout);
@@ -64,6 +61,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
     }
 
     private void displayInitialData(List<TableItem>items) {
+        RowCounter=1;
         for (TableItem item:items) {
 
             final TextView description = getLabel("Description "+RowCounter);
@@ -74,8 +72,8 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
             final EditText descriptionInp= getTextInput("descriptionInput "+RowCounter);
             final EditText dateInp= getTextInput("dateInput "+RowCounter);
             final FloatingActionButton pickDateBtn = getButton(RowCounter);
-            final EditText priceInp= getTextInput("priceInput "+RowCounter);
-            final EditText qtyInp= getTextInput("qtyInput "+RowCounter);
+            final EditText priceInp= getNumericInput("priceInput "+RowCounter);
+            final EditText qtyInp= getNumericInput("qtyInput "+RowCounter);
 
             descriptionInp.setText(item.description);
             dateInp.setText(item.date);
@@ -159,6 +157,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
             main.addView(price);
             main.addView(priceInp);
 
+            hsitems.put(RowCounter,new TableItem(null,null,0,null));
 
             RowCounter=RowCounter+1;
 
@@ -256,7 +255,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         main.addView(price);
         main.addView(priceInp);
 
-        items.put(RowCounter,new TableItem(null,null,0,null));
+        hsitems.put(RowCounter,new TableItem(null,null,0,null));
 
         RowCounter=RowCounter+1;
     }
@@ -357,8 +356,8 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
 
 
     public InvoiceData generateInvoiceData(){
-
-        for (Integer i: items.keySet() ) {
+        invData.clearTableItems();
+        for (Integer i: hsitems.keySet() ) {
             String descriptionName = "descriptionInput "+i;
             EditText description = (EditText) main.findViewWithTag(descriptionName);
 
@@ -377,12 +376,12 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
                 price.setText("0");
             }
 
-            items.get(i).setDescription(String.valueOf(description.getText()));
-            items.get(i).setDate(String.valueOf(date.getText()));
-            items.get(i).setQuantity(Integer.parseInt(String.valueOf(qty.getText())));
-            items.get(i).setPrice(Double.parseDouble(String.valueOf(price.getText())));
+            hsitems.get(i).setDescription(String.valueOf(description.getText()));
+            hsitems.get(i).setDate(String.valueOf(date.getText()));
+            hsitems.get(i).setQuantity(Integer.parseInt(String.valueOf(qty.getText())));
+            hsitems.get(i).setPrice(Double.parseDouble(String.valueOf(price.getText())));
 
-            invData.addTableItem(items.get(i));
+            invData.addTableItem(hsitems.get(i));
 
 
         }

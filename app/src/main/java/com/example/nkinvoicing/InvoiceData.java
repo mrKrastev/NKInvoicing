@@ -86,4 +86,8 @@ public class InvoiceData implements Serializable {
     public void setInvoicePaid(Boolean invoicePaid) {
         this.invoicePaid = invoicePaid;
     }
+
+    public void clearTableItems() {
+        tbItems=new ArrayList<TableItem>();
+    }
 }
