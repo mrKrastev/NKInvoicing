@@ -78,7 +78,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/invoiceIDlbl2"
+                        android:id="@+id/issueDatelbl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="114dp"
@@ -377,7 +377,7 @@
                         android:layout_marginStart="100dp"
                         android:clickable="true"
                         android:foregroundTint="#00C853"
-                        android:onClick="editServices"
+                        android:onClick="editTable"
                         app:backgroundTint="#FFFFFF"
                         app:fabSize="mini"
                         app:layout_constraintBottom_toBottomOf="@+id/textView7"

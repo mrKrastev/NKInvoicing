@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EditContacts extends AppCompatActivity {
     Contacts contacts;
+    InvoiceData invData;
     Intent backToInvoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_contacts);
-        contacts = (Contacts) getIntent().getSerializableExtra("Contacts");
+        invData =(InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+        contacts = invData.contacts;
         backToInvoice = new Intent(this,StandardInvoice.class);
         loadContacts(contacts);
     }
@@ -50,7 +52,7 @@ public class EditContacts extends AppCompatActivity {
     }
     public void cancelEditContacts(View view){
         //you basically return without updating anything (i might need an id later in here)
-        backToInvoice.putExtra("Contacts",contacts);
+        backToInvoice.putExtra("InvoiceData",invData);
         startActivity(backToInvoice);
     }
     public void updateContacts(View view){
@@ -83,9 +85,9 @@ public class EditContacts extends AppCompatActivity {
         contacts.receiverCompanyID = receiverCompanyID.getText().toString();
         contacts.receiverEmail = receiverEmail.getText().toString();
 
+        invData.setContacts(contacts);
 
-
-       backToInvoice.putExtra("Contacts",contacts);
+       backToInvoice.putExtra("InvoiceData",invData);
         startActivity(backToInvoice);
     }
 }
