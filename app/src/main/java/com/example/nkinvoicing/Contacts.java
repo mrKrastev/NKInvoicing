@@ -1,7 +1,5 @@
 package com.example.nkinvoicing;
 
-import android.widget.EditText;
-
 import java.io.Serializable;
 
 public class Contacts implements Serializable {
@@ -45,6 +43,7 @@ public class Contacts implements Serializable {
         this.receiverCompanyID = receiverCompanyID;
         this.receiverEmail = receiverEmail;
     }
+    public Contacts(){}
 
     @Override
     public String toString() {

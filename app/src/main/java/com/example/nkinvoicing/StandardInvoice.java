@@ -15,37 +15,36 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.round;
 
 public class StandardInvoice extends AppCompatActivity {
 
-    Intent contactsEditIntent;
-    Contacts contacts;
+    private InvoiceData invData;
+    private TextView invoiceNo;
+    private TextView issueDate;
+    private TextView dueDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.standard_invoice);
-        contacts = (Contacts) getIntent().getSerializableExtra("Contacts");
-        if(contacts==null){
-                contacts = new Contacts(getString(R.string.user_company_name),
-                getString(R.string.user_address),
-                getString(R.string.user_postcode),
-                getString(R.string.user_tel),
-                getString(R.string.user_company_id),
-                getString(R.string.user_email),
-                getString(R.string.receiver_company_name),
-                getString(R.string.receiver_address),
-                getString(R.string.receiver_postcode),
-                getString(R.string.receiver_tel),
-                getString(R.string.receiver_company_id),
-                getString(R.string.receiver_email));
-        }
-        createContacts(contacts);
-        createTable();
-        contactsEditIntent = new Intent(this,EditContacts.class);
-        contactsEditIntent.putExtra("Contacts",contacts);
+        //getting the invoice data object
+        invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+        //setting the contacts object from the invoice data
+        createContacts(invData.getContacts());
+        //generating the table from the invoice table items
+        createTable(invData.getTableItems());
+        //setting the uneditable fields
+        issueDate=findViewById(R.id.issueDatelbl);
+        invoiceNo = findViewById(R.id.invoiceIDlbl);
+        dueDate = findViewById(R.id.dueDateLbl);
+        issueDate.setText(invData.invoiceDate);
+        invoiceNo.setText(invData.invoiceNo);
+        dueDate.setText(invData.dueDate);
+
     }
     public void createContacts(Contacts c){
         TextView userCompany = findViewById(R.id.userCompanyNamelbl);
@@ -76,10 +75,11 @@ public class StandardInvoice extends AppCompatActivity {
         receiverCompanyID.setText(c.receiverCompanyID);
         receiverEmail.setText(c.receiverEmail);
     }
-    public void createTable() {
-        DecimalFormat f = new DecimalFormat("##.00");
-        Double GrossValue=0.00;
-        TableLayout stk = (TableLayout) findViewById(R.id.standard_invoice_table);
+    public void createTable(List<TableItem> items) {
+        DecimalFormat f = new DecimalFormat("##.00"); //setting 2dp for values in the table
+        Double GrossValue=0.00; // setting default value for GROSS
+        TableLayout table = (TableLayout) findViewById(R.id.standard_invoice_table);//getting the table view
+        //Generating the headers of the table---------------------------------------------------------------
         TableRow tableHeaderFields = new TableRow(this);
         tableHeaderFields.setMinimumHeight(100);
         TextView tv0 = new TextView(this);
@@ -110,49 +110,51 @@ public class StandardInvoice extends AppCompatActivity {
         tv3.setTextColor(0xFD206E1A);
         tv3.setGravity(Gravity.RIGHT);
         tableHeaderFields.addView(tv3);
-        stk.addView(tableHeaderFields);
+        table.addView(tableHeaderFields);
 
         //~~~~~~~~~~ Populate table ~~~~~~~~~~~~~~~~~
-        for (int i = 0; i < 5; i++) {
+        for (TableItem item:items) { //looping through each item in the Invoice Data and making a row
             TableRow tbrow = new TableRow(this);
             tbrow.setMinimumHeight(150);
+            //----------------Description field----------------------
             TextView descriptionField = new TextView(this);
-            String descriptionValue = "Web Developer Services";
+            String descriptionValue = item.description;
             descriptionField.setText(descriptionValue);
             descriptionField.setTextColor(Color.BLACK);
             descriptionField.setGravity(Gravity.LEFT);
             descriptionField.setMaxWidth(350);
             tbrow.addView(descriptionField);
+            //----------------Date Field------------------------------
             TextView dateField = new TextView(this);
-            CharSequence dateValue  = DateFormat.format("dd/MM/yy", new Date());
+            CharSequence dateValue  = item.date;
             dateField.setText(dateValue);
             dateField.setTextColor(Color.BLACK);
             dateField.setGravity(Gravity.LEFT);
             dateField.setMaxWidth(30);
             tbrow.addView(dateField);
+            //---------------Quantity Field---------------------------
             TextView qtyField = new TextView(this);
-            int qtyValue=40;
-            qtyField.setText(""+qtyValue);
+            qtyField.setText(""+item.quantity);
             qtyField.setTextColor(Color.BLACK);
             qtyField.setMaxWidth(230);
             qtyField.setGravity(Gravity.CENTER);
             tbrow.addView(qtyField);
+            //----------------Price----------------------------------
             TextView priceField = new TextView(this);
-            Double priceValue = 15.69;
-            priceField.setText("£"+priceValue);
+            priceField.setText("£"+item.price);
             priceField.setTextColor(Color.BLACK);
             priceField.setGravity(Gravity.CENTER);
             priceField.setMaxWidth(150);
             tbrow.addView(priceField);
             TextView totalField = new TextView(this);
-            Double totalFieldValue =priceValue * qtyValue;
+            Double totalFieldValue =item.getAmount();
             totalField.setText("£" + f.format(totalFieldValue));
             totalField.setMaxWidth(230);
             totalField.setTextColor(Color.BLACK);
             totalField.setGravity(Gravity.RIGHT);
             tbrow.addView(totalField);
-            GrossValue=GrossValue + totalFieldValue;
-            stk.addView(tbrow);
+            GrossValue=GrossValue + totalFieldValue; //accumulating the gross value
+            table.addView(tbrow);// adding the row to the table
 
         }
         //summary rows:
@@ -173,7 +175,7 @@ public class StandardInvoice extends AppCompatActivity {
         SUMvaluelbl.setMinimumWidth(250);
         SUMvaluelbl.setGravity(Gravity.RIGHT);
         SUMrow.addView(SUMvaluelbl);
-        stk.addView(SUMrow);
+        table.addView(SUMrow);
 
         //~~~~~~ VAT/TAX ~~~~~~~~
         TableRow VATrow = new TableRow(this);
@@ -191,7 +193,7 @@ public class StandardInvoice extends AppCompatActivity {
         VATvalue.setMinimumWidth(250);
         VATvalue.setGravity(Gravity.RIGHT);
         VATrow.addView(VATvalue);
-        stk.addView(VATrow);
+        table.addView(VATrow);
 
         // ~~~~~ Total with VAT ~~~~~~~~~~~~~
         TableRow NETrow = new TableRow(this);
@@ -209,12 +211,20 @@ public class StandardInvoice extends AppCompatActivity {
         NETvalue.setMinimumWidth(250);
         NETvalue.setGravity(Gravity.RIGHT);
         NETrow.addView(NETvalue);
-        stk.addView(NETrow);
+        table.addView(NETrow);
 
     }
 
     public void editContacts(View view){
-
+        //passing the invoice object to edit the contacts
+        Intent contactsEditIntent = new Intent(this,EditContacts.class);
+        contactsEditIntent.putExtra("InvoiceData",invData);
         startActivity(contactsEditIntent);
+    }
+    public void editTable(View view){
+        //returning the invoice object to the table creating view
+        Intent tableEditIntent = new Intent(this,StandardTableCreator.class);
+        tableEditIntent.putExtra("InvoiceData",invData);
+        startActivity(tableEditIntent);
     }
 }
