@@ -1,7 +1,6 @@
 package com.example.nkinvoicing;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class TableItem implements Serializable {
     String description;

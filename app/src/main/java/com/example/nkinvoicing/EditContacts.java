@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -77,7 +77,7 @@ public class EditContacts extends AppCompatActivity {
         startActivity(backToInvoice);
     }
     public void updateContacts(View view){
-        
+
         //update the string resources:
         contacts.userCompany = userCompany.getText().toString();
         contacts.userAddress = userAddress.getText().toString();

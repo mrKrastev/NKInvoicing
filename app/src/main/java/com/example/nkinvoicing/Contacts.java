@@ -1,7 +1,5 @@
 package com.example.nkinvoicing;
 
-import android.widget.EditText;
-
 import java.io.Serializable;
 
 public class Contacts implements Serializable {
