@@ -45,6 +45,7 @@ public class Contacts implements Serializable {
         this.receiverCompanyID = receiverCompanyID;
         this.receiverEmail = receiverEmail;
     }
+    public Contacts(){}
 
     @Override
     public String toString() {
