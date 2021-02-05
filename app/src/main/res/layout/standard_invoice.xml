@@ -45,11 +45,11 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/logoImg"
                         android:layout_width="142dp"
                         android:layout_height="127dp"
                         android:layout_marginTop="28dp"
-                        android:layout_marginEnd="40dp"
+                        android:layout_marginEnd="80dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_launcher_foreground" />
@@ -217,7 +217,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/user_email"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userCompanyID" />
 
@@ -229,7 +229,7 @@
                                 android:layout_marginTop="16dp"
                                 android:text="From:"
                                 android:textColor="#0F2903"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -239,8 +239,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textSize="12sp"
+                                android:text="@string/user_company_name"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -250,7 +250,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/user_address"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userCompanyNamelbl" />
 
@@ -260,7 +260,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/user_postcode"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userAddresslbl" />
 
@@ -270,7 +270,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/user_tel"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userPostcodelbl" />
 
@@ -278,12 +278,11 @@
                                 android:id="@+id/userCompanyID"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
+                                android:layout_marginStart="24dp"
                                 android:text="@string/user_company_id"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/userPostcodelbl" />
+                                app:layout_constraintTop_toBottomOf="@+id/userTelLbl" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -300,7 +299,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/receiver_email"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverCompanyID" />
 
@@ -312,7 +311,7 @@
                                 android:layout_marginTop="16dp"
                                 android:text="For:"
                                 android:textColor="#0F2903"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -322,7 +321,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/receiver_address"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverName" />
 
@@ -332,7 +331,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/receiver_postcode"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverAddress" />
 
@@ -342,7 +341,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/receiver_tel"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverPostcode" />
 
@@ -352,7 +351,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="@string/receiver_company_id"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/receiverTelLbl" />
 
@@ -363,7 +362,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/receiver_company_name"
-                                android:textSize="12sp"
+                                android:textSize="14sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -399,6 +398,20 @@
                         app:layout_constraintStart_toStartOf="@+id/textView6"
                         app:rippleColor="#131212"
                         app:srcCompat="@android:drawable/ic_menu_edit" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/chooseImgBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="112dp"
+                        android:layout_marginEnd="60dp"
+                        android:clickable="true"
+                        android:foregroundTint="#06682F"
+                        android:tint="#067734"
+                        app:backgroundTint="#C5CCC8"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </HorizontalScrollView>

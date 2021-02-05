@@ -1,11 +1,16 @@
 package com.example.nkinvoicing;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class InvoiceData implements Serializable {
+    URI logoImage;
     Contacts contacts;
     List<TableItem> tbItems;
     String invoiceNo;
@@ -19,6 +24,7 @@ public class InvoiceData implements Serializable {
         this.invoiceNo = invoiceNo;
         this.invoiceDate = invoiceDate;
         this.dueDate = dueDate;
+        logoImage= null;
     }
 
     @Override

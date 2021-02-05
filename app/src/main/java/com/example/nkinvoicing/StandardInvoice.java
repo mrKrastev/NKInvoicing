@@ -1,25 +1,39 @@
 package com.example.nkinvoicing;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static java.lang.Integer.parseInt;
-import static java.lang.Math.round;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.DecimalFormat;
+import java.util.List;
 
 public class StandardInvoice extends AppCompatActivity {
 
@@ -27,6 +41,11 @@ public class StandardInvoice extends AppCompatActivity {
     private TextView invoiceNo;
     private TextView issueDate;
     private TextView dueDate;
+    ImageView logo;
+    FloatingActionButton logoPickerButton;
+    private static final int IMAGE_PICK_CODE=1000;
+    private static final int PERMISSION_CODE=1001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +63,77 @@ public class StandardInvoice extends AppCompatActivity {
         issueDate.setText(invData.invoiceDate);
         invoiceNo.setText(invData.invoiceNo);
         dueDate.setText(invData.dueDate);
+        logo=findViewById(R.id.logoImg);
+
+       if(invData.logoImage!=null){
+           Log.e("uriback",invData.logoImage.toString() );
+                logo.setImageURI(Uri.parse(invData.logoImage.toString()));
+        }
+        logoPickerButton=findViewById(R.id.chooseImgBtn);
+        logoPickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                    //permission request needed:
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        //popup
+                        requestPermissions(permissions,PERMISSION_CODE);
+                    }else{
+                    //we got permission
+                    pickImageFromGallery();
+                    }
+                }else{
+                    //dont need permission lol
+                    pickImageFromGallery();
+                }
+            }
+        });
 
     }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent (Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,IMAGE_PICK_CODE);
+    }
+    private Uri getImageUri(String myURI)  {
+        Uri uri = Uri.parse(myURI);
+        return uri;
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK && requestCode==IMAGE_PICK_CODE){
+            //set the image
+            logo.setImageURI(data.getData());
+            Uri imageUri = data.getData();
+            try {
+                URI juri = new URI(imageUri.toString());
+                 invData.logoImage=juri;
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    Toast.makeText(this, "Permission Denied :C", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
     public void createContacts(Contacts c){
         TextView userCompany = findViewById(R.id.userCompanyNamelbl);
         TextView userAddress = findViewById(R.id.userAddresslbl);
