@@ -1,5 +1,6 @@
 package com.example.nkinvoicing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.gridlayout.widget.GridLayout;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.Layout;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,9 +34,11 @@ import static android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM;
 
 public class MainActivity extends AppCompatActivity {
 GridLayout myGrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyDatabaseManager dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
         getCards(this);

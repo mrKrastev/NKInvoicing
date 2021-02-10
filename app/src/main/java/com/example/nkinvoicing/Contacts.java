@@ -1,6 +1,7 @@
 package com.example.nkinvoicing;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Contacts implements Serializable {
 
@@ -17,6 +18,7 @@ public class Contacts implements Serializable {
     String receiverTel;
     String receiverCompanyID;
     String receiverEmail;
+    private String ID;
 
     public Contacts(String userCompany,
                     String userAddress,
@@ -42,9 +44,12 @@ public class Contacts implements Serializable {
         this.receiverTel = receiverTel;
         this.receiverCompanyID = receiverCompanyID;
         this.receiverEmail = receiverEmail;
+        ID= UUID.randomUUID().toString();
     }
     public Contacts(){}
-
+    String getContactsID(){
+        return ID;
+    }
     @Override
     public String toString() {
         return "Contacts{" +

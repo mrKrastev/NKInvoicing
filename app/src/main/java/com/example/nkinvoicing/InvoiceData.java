@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class InvoiceData implements Serializable {
@@ -17,8 +18,10 @@ public class InvoiceData implements Serializable {
     String invoiceDate;
     String dueDate;
     Boolean invoicePaid=false;
+    private String ID;
 
     public InvoiceData(Contacts contacts, String invoiceNo, String invoiceDate, String dueDate) {
+        ID= UUID.randomUUID().toString();
         this.contacts = contacts;
         this.tbItems = new ArrayList<>();
         this.invoiceNo = invoiceNo;
@@ -27,6 +30,9 @@ public class InvoiceData implements Serializable {
         logoImage= null;
     }
 
+    public String getID(){
+        return ID;
+    }
     @Override
     public String toString() {
         return "InvoiceData{" +

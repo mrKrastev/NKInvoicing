@@ -7,9 +7,14 @@ public class TableItem implements Serializable {
     String date;
     int quantity;
     Double price;
+    private String invoiceID;
+
 
     public String getDescription() {
         return description;
+    }
+    public String getInvoiceID(){
+        return invoiceID;
     }
 
     public void setDescription(String description) {
@@ -54,11 +59,16 @@ public class TableItem implements Serializable {
                 '}';
     }
 
+    public void setInvoiceID(String invoiceID) {
+        this.invoiceID = invoiceID;
+    }
+
     public TableItem(String description, String date, int quantity, Double price) {
         this.description = description;
         this.date = date;
         this.quantity = quantity;
         this.price = price;
+
     }
 
 }

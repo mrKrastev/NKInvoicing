@@ -13,7 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -45,13 +48,37 @@ public class StandardInvoice extends AppCompatActivity {
     FloatingActionButton logoPickerButton;
     private static final int IMAGE_PICK_CODE=1000;
     private static final int PERMISSION_CODE=1001;
+    MyDatabaseManager db;
+    Boolean saved;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.standard_invoice_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.saveBtn){
+            if(saved==false) {
+                db.saveInvoiceToDB(invData);
+                saved=true;
+                Toast.makeText(this, "Invoice Saved!", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this, "You already saved this invoice!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        saved=false;
+        db = new MyDatabaseManager(StandardInvoice.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.standard_invoice);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+
         //setting the contacts object from the invoice data
         createContacts(invData.getContacts());
         //generating the table from the invoice table items

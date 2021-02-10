@@ -319,7 +319,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         input.setSingleLine(false);
         input.setMinimumHeight(150);
         input.setGravity(Gravity.CENTER);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         return input;
     }
     public void pickDate(View view) { //method which makes a calendar to pop up
@@ -387,7 +387,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
             hsitems.get(i).setDate(String.valueOf(date.getText()));
             hsitems.get(i).setQuantity(Integer.parseInt(String.valueOf(qty.getText())));
             hsitems.get(i).setPrice(Double.parseDouble(String.valueOf(price.getText())));
-
+            hsitems.get(i).setInvoiceID(invData.getID());
             invData.addTableItem(hsitems.get(i)); //adding the object to the invoice data
 
 
