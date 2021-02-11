@@ -28,13 +28,15 @@ public class MainActivity extends AppCompatActivity {
 GridLayout myGrid;
 MyDatabaseManager dbMngr;
 List<InvoiceData> invoices;
+HashMap<String,InvoiceData> invoiceHashMap;
+Intent refresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        refresh=new Intent(this,MainActivity.class);
         super.onCreate(savedInstanceState);
         dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
-        invoices = dbMngr.getAllInvoices();
         getCards(this);
     }
 
@@ -46,8 +48,11 @@ List<InvoiceData> invoices;
     }
 
     public void getCards(final MainActivity view){
+        myGrid.removeAllViews();
+        invoices = dbMngr.getAllInvoices();
+        invoiceHashMap=new HashMap<>();
         for (InvoiceData invObject:invoices) {
-
+            invoiceHashMap.put(invObject.getID(),invObject);
             final CardView c = new CardView(this);
             TextView objectTitle = new TextView(this);
             TextView amountLbl = new TextView(this);
@@ -69,7 +74,7 @@ List<InvoiceData> invoices;
 
             }
 
-            objectTitle.setText(invObject.contacts.userCompany);
+            objectTitle.setText(invObject.contacts.receiverCompany);
             objectTitle.setTextSize(15);
             objectTitle.setTextColor(Color.rgb(244, 199, 163));
 
@@ -134,7 +139,6 @@ List<InvoiceData> invoices;
                     clicked=selectOptions(c,clicked);
                     return true;
                 } });
-
             myGrid.addView(c);
         }
     }
@@ -143,14 +147,28 @@ List<InvoiceData> invoices;
         Toast.makeText(this, c.getTag().toString(), Toast.LENGTH_SHORT).show();
     }
 
-    private boolean selectOptions(CardView c, boolean clicked) {
+    private boolean selectOptions(final CardView c, boolean clicked) {
         if(!clicked) {
-            Toast.makeText(this, "Hold", Toast.LENGTH_SHORT).show();
             Button delete = new Button(this);
             delete.setBackgroundColor(Color.RED);
             delete.setTextColor(Color.WHITE);
             delete.setText("Delete");
             delete.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            delete.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean deleted=dbMngr.deleteItemFromDB(invoiceHashMap.get(c.getTag()));
+                    if(deleted){
+                        Toast.makeText(MainActivity.this, "Invoice Deleted!", Toast.LENGTH_LONG).show();
+                        getCards(MainActivity.this);
+                    }else{
+                        Toast.makeText(MainActivity.this, "Unable to delete invoice :C", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+
             Button setPaid = new Button(this);
             setPaid.setBackgroundColor(Color.rgb(90, 153, 167));
             setPaid.setTextColor(Color.WHITE);

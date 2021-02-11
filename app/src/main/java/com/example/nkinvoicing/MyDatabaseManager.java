@@ -168,6 +168,18 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         return items;
     }
 
+    public boolean deleteItemFromDB(InvoiceData invData){
+        SQLiteDatabase db = getWritableDatabase();
+        String deleteQuery = "DELETE FROM " + INVOICES_TABLE + " WHERE " + UNIQUE_INVOICE_CODE+"='"+invData.getID()+"';";
+        Cursor cursor = db.rawQuery(deleteQuery, null);
+        if(cursor.moveToFirst()){
+            db.close();
+            return false;
+        }else{
+            db.close();
+            return true;
+        }
+    }
 
 
 
@@ -214,4 +226,5 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         db.close();
         return true;
     }
+
 }

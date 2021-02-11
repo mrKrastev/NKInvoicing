@@ -63,6 +63,8 @@ public class StandardInvoice extends AppCompatActivity {
                 db.saveInvoiceToDB(invData);
                 saved=true;
                 Toast.makeText(this, "Invoice Saved!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
             }else{
                 Toast.makeText(this, "You already saved this invoice!", Toast.LENGTH_SHORT).show();
             }
