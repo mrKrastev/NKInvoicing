@@ -30,6 +30,10 @@ public class InvoiceData implements Serializable {
         logoImage= null;
     }
 
+    public InvoiceData(String databaseID) {
+        ID= databaseID;
+    }
+
     public String getID(){
         return ID;
     }

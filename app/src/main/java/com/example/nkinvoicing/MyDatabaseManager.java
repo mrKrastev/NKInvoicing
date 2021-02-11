@@ -2,11 +2,15 @@ package com.example.nkinvoicing;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyDatabaseManager extends SQLiteOpenHelper {
     public static final String INVOICES_TABLE = "INVOICES_TABLE";
@@ -83,6 +87,88 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+    public List<InvoiceData> getAllInvoices(){
+        List<InvoiceData> invoices = new ArrayList<>();
+        String selectInvoicesSQLstatement= "SELECT * FROM " + INVOICES_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectInvoicesSQLstatement,null);
+        if(cursor.moveToFirst()){
+            //loop through the invoice records
+            do{
+                InvoiceData invData = new InvoiceData(cursor.getString(cursor.getColumnIndex(UNIQUE_INVOICE_CODE)));
+                invData.invoiceNo=cursor.getString(cursor.getColumnIndex(INVOICE_NO_COLUMN));
+                invData.invoiceDate=cursor.getString(cursor.getColumnIndex(ISSUE_DATE_COLUMN));
+                invData.dueDate=cursor.getString(cursor.getColumnIndex(DUE_DATE_COLUMN));
+                invData.invoicePaid=cursor.getInt(cursor.getColumnIndex(PAID_COLUMN))>0;
+                invData.contacts=getContacts(cursor.getString(cursor.getColumnIndex(CONTACTS)));
+                invData.tbItems=getTableItems(cursor.getString(cursor.getColumnIndex(UNIQUE_INVOICE_CODE)));
+                invoices.add(invData);
+            }while(cursor.moveToNext());
+
+        }else{
+            return invoices;
+        }
+        return invoices;
+
+    }
+    public Contacts getContacts(String contactID){
+        Contacts contacts=new Contacts();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement ="SELECT * FROM " + CONTACTS_TABLE + " WHERE " + UNIQUE_CONTACTS_CODE + "='"+contactID+"';";
+        Cursor cursor = db.rawQuery(sqlStatement,null);
+        if(cursor.moveToFirst()){
+            contacts.userCompany=cursor.getString(cursor.getColumnIndex(USER_NAME_COLUMN));
+            contacts.receiverCompany=cursor.getString(cursor.getColumnIndex(RECEIVER_NAME_COLUMN));
+            contacts.userPostcode=cursor.getString(cursor.getColumnIndex(USER_POSTCODE_COLUMN));
+            contacts.receiverPostcode=cursor.getString(cursor.getColumnIndex(RECEIVER_POSTCODE_COLUMN));
+            contacts.userAddress=cursor.getString(cursor.getColumnIndex(USER_ADDRESS_COLUMN));
+            contacts.receiverPostcode=cursor.getString(cursor.getColumnIndex(RECEIVER_POSTCODE_COLUMN));
+            contacts.userTel=cursor.getString(cursor.getColumnIndex(USER_TEL_COLUMN));
+            contacts.receiverTel=cursor.getString(cursor.getColumnIndex(RECEIVER_TEL_COLUMN));
+            contacts.userCompanyID=cursor.getString(cursor.getColumnIndex(USER_COMPID_COLUMN));
+            contacts.receiverCompanyID=cursor.getString(cursor.getColumnIndex(RECEIVER_COMPID_COLUMN));
+            contacts.userEmail=cursor.getString(cursor.getColumnIndex(USER_EMAIL_COLUMN));
+            contacts.receiverEmail=cursor.getString(cursor.getColumnIndex(RECEIVER_EMAIL_COLUMN));
+        }else{
+            cursor.close();
+            db.close();
+            return null;
+        }
+        cursor.close();
+        db.close();
+        return contacts;
+    }
+
+    public List<TableItem> getTableItems(String invoiceID){
+        List<TableItem> items= new ArrayList<>();
+        String sqlStatement="SELECT * FROM " + ITEMS_TABLE + " WHERE " + UIC_COLUMN + "='"+invoiceID+"';";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sqlStatement,null);
+
+        if(cursor.moveToFirst()){
+            //loop through the item table records
+            do{
+                TableItem tbitem = new TableItem();
+                tbitem.description=cursor.getString(cursor.getColumnIndex(DESCRIPTION_COLUMN));
+                tbitem.date=cursor.getString(cursor.getColumnIndex(DATE_COLUMN));
+                tbitem.price=cursor.getDouble(cursor.getColumnIndex(PRICE_COLUMN));
+                tbitem.quantity=cursor.getInt(cursor.getColumnIndex(QUANTITY_COLUMN));
+                items.add(tbitem);
+            }while(cursor.moveToNext());
+
+        }else{
+            return items;
+        }
+
+        return items;
+    }
+
+
+
+
+
+
 
     public boolean saveInvoiceToDB(InvoiceData invData){
         SQLiteDatabase db = this.getWritableDatabase();

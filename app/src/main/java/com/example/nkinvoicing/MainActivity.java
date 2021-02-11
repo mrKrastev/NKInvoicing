@@ -1,26 +1,15 @@
 package com.example.nkinvoicing;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.gridlayout.widget.GridLayout;
 
-import android.app.ActionBar;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.Icon;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.Layout;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -30,25 +19,41 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM;
 
 public class MainActivity extends AppCompatActivity {
 GridLayout myGrid;
-
+MyDatabaseManager dbMngr;
+HashMap<String,InvoiceData> invoices;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyDatabaseManager dbMngr = new MyDatabaseManager(MainActivity.this);
+        dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
+        invoices=reconstructInvoices();
         getCards(this);
     }
+
+    private HashMap<String, InvoiceData> reconstructInvoices() {
+        invoices = new HashMap<>();
+
+        Contacts contacts = reconstructContacts();
+        List<TableItem> TableItems = reconstructTableItems();
+
+        return invoices;
+    }
+
+    private Contacts reconstructContacts() {
+        return null;
+    }
+
+    private List<TableItem> reconstructTableItems() {
+        return null;
+    }
+
     public void PickInvoiceType (View view){
         Intent it = new Intent(this,PickInvoice.class);
         startActivity(it);

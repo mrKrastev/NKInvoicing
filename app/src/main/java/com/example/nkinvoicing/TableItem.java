@@ -9,6 +9,9 @@ public class TableItem implements Serializable {
     Double price;
     private String invoiceID;
 
+    public TableItem() {
+    }
+
 
     public String getDescription() {
         return description;
