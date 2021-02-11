@@ -8,10 +8,12 @@ import androidx.gridlayout.widget.GridLayout;
 import android.app.ActionBar;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,11 +22,15 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -125,14 +131,54 @@ GridLayout myGrid;
             marginLayoutParams.setMargins(8, 8, 8, 8);
             c.setLayoutParams(marginLayoutParams);
             c.setId(i);
-            c.setOnClickListener(new View.OnClickListener() {
-                @Override
+            c.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    Toast.makeText(view, "Card ID: "+c.getId(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    showInvoice();
+                } });
+            c.setOnLongClickListener(new View.OnLongClickListener() {
+                boolean clicked=false;
+                public boolean onLongClick(View v) {
+                    clicked=selectOptions(c,clicked);
+                    return true;
+                } });
 
             myGrid.addView(c);
+        }
+    }
+
+    private void showInvoice() {
+        Toast.makeText(this, "Tap", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean selectOptions(CardView c, boolean clicked) {
+        if(!clicked) {
+            Toast.makeText(this, "Hold", Toast.LENGTH_SHORT).show();
+            Button delete = new Button(this);
+            delete.setBackgroundColor(Color.RED);
+            delete.setTextColor(Color.WHITE);
+            delete.setText("Delete");
+            delete.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            Button setPaid = new Button(this);
+            setPaid.setBackgroundColor(Color.rgb(90, 153, 167));
+            setPaid.setTextColor(Color.WHITE);
+            setPaid.setText("Mark Paid");
+            setPaid.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            LinearLayout btnLayout = new LinearLayout(this);
+            btnLayout.setBackgroundColor(Color.argb(120,191, 181, 180));
+            btnLayout.setVerticalFadingEdgeEnabled(true);
+            btnLayout.setHorizontalFadingEdgeEnabled(true);
+            btnLayout.setTag(c.getId()+"lnrLayout");
+            btnLayout.setOrientation(LinearLayout.VERTICAL);
+            btnLayout.setGravity(Gravity.CENTER);
+            btnLayout.addView(setPaid);
+            btnLayout.addView(delete);
+            c.addView(btnLayout);
+            return true;
+        }else{
+            LinearLayout mylayout= c.findViewWithTag(c.getId()+"lnrLayout");
+            c.removeView(mylayout);
+            return false;
         }
     }
 }
