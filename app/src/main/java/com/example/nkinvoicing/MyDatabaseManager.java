@@ -107,8 +107,12 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
 
         }else{
+            cursor.close();
+            db.close();
             return invoices;
         }
+        cursor.close();
+        db.close();
         return invoices;
 
     }
@@ -207,7 +211,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         }
         db.insert(INVOICES_TABLE, null, contentInvoice);
         db.insert(CONTACTS_TABLE, null, contentContacts);
-
+        db.close();
         return true;
     }
 }

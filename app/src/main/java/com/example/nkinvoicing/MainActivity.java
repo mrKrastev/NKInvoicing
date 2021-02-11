@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,33 +27,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 GridLayout myGrid;
 MyDatabaseManager dbMngr;
-HashMap<String,InvoiceData> invoices;
+List<InvoiceData> invoices;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
-        invoices=reconstructInvoices();
+        invoices = dbMngr.getAllInvoices();
         getCards(this);
     }
 
-    private HashMap<String, InvoiceData> reconstructInvoices() {
-        invoices = new HashMap<>();
 
-        Contacts contacts = reconstructContacts();
-        List<TableItem> TableItems = reconstructTableItems();
-
-        return invoices;
-    }
-
-    private Contacts reconstructContacts() {
-        return null;
-    }
-
-    private List<TableItem> reconstructTableItems() {
-        return null;
-    }
 
     public void PickInvoiceType (View view){
         Intent it = new Intent(this,PickInvoice.class);
@@ -60,7 +46,8 @@ HashMap<String,InvoiceData> invoices;
     }
 
     public void getCards(final MainActivity view){
-        for (int i = 1; i<31;i++){
+        for (InvoiceData invObject:invoices) {
+
             final CardView c = new CardView(this);
             TextView objectTitle = new TextView(this);
             TextView amountLbl = new TextView(this);
@@ -82,25 +69,26 @@ HashMap<String,InvoiceData> invoices;
 
             }
 
-            objectTitle.setText("Company name here");
+            objectTitle.setText(invObject.contacts.userCompany);
             objectTitle.setTextSize(15);
             objectTitle.setTextColor(Color.rgb(244, 199, 163));
 
-            issueDateLbl.setText("Issued on: 12/12/12");
+            issueDateLbl.setText("Issue Date: "+invObject.invoiceDate);
             issueDateLbl.setTextSize(12);
             issueDateLbl.setTextColor(Color.rgb(199, 227, 168));
 
-            amountLbl.setText("Amount: £21312");
+
+            amountLbl.setText("Amount: £"+invObject.getAmount());
             amountLbl.setTextSize(12);
             amountLbl.setTextColor(Color.rgb(167, 224, 215));
             amountLbl.setMaxWidth(150);
 
-            statusLbl.setText("Status:Unpaid");
+            statusLbl.setText("Status:Unpaid");// fix this to change ( u re actually having a boolean in the invObject)
             statusLbl.setTextSize(12);
             statusLbl.setTextColor(Color.rgb(249, 127, 117));
             statusLbl.setMaxWidth(120);
 
-            dueDateLbl.setText("Due: 12/12/12");
+            dueDateLbl.setText("Due: "+invObject.dueDate);
             dueDateLbl.setTextSize(12);
             dueDateLbl.setTextColor(Color.rgb(195, 174, 211));
 
@@ -135,10 +123,10 @@ HashMap<String,InvoiceData> invoices;
             );
             marginLayoutParams.setMargins(8, 8, 8, 8);
             c.setLayoutParams(marginLayoutParams);
-            c.setId(i);
+            c.setTag(invObject.getID());
             c.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    showInvoice();
+                    showInvoice(c);
                 } });
             c.setOnLongClickListener(new View.OnLongClickListener() {
                 boolean clicked=false;
@@ -151,8 +139,8 @@ HashMap<String,InvoiceData> invoices;
         }
     }
 
-    private void showInvoice() {
-        Toast.makeText(this, "Tap", Toast.LENGTH_SHORT).show();
+    private void showInvoice(CardView c) {
+        Toast.makeText(this, c.getTag().toString(), Toast.LENGTH_SHORT).show();
     }
 
     private boolean selectOptions(CardView c, boolean clicked) {
@@ -173,7 +161,7 @@ HashMap<String,InvoiceData> invoices;
             btnLayout.setBackgroundColor(Color.argb(120,191, 181, 180));
             btnLayout.setVerticalFadingEdgeEnabled(true);
             btnLayout.setHorizontalFadingEdgeEnabled(true);
-            btnLayout.setTag(c.getId()+"lnrLayout");
+            btnLayout.setTag(c.getTag()+"lnrLayout");
             btnLayout.setOrientation(LinearLayout.VERTICAL);
             btnLayout.setGravity(Gravity.CENTER);
             btnLayout.addView(setPaid);
@@ -181,7 +169,7 @@ HashMap<String,InvoiceData> invoices;
             c.addView(btnLayout);
             return true;
         }else{
-            LinearLayout mylayout= c.findViewWithTag(c.getId()+"lnrLayout");
+            LinearLayout mylayout=c.findViewWithTag(c.getTag()+"lnrLayout");
             c.removeView(mylayout);
             return false;
         }

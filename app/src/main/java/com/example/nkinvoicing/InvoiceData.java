@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -104,5 +105,16 @@ public class InvoiceData implements Serializable {
 
     public void clearTableItems() {
         tbItems=new ArrayList<TableItem>();
+    }
+
+    public Double getAmount(){
+        Double total=0.00;
+        DecimalFormat df = new DecimalFormat("#.##");
+        for (TableItem i:tbItems
+             ) {
+            total=total+i.getAmount();
+        }
+        total=Double.valueOf(df.format(total));
+        return total;
     }
 }
