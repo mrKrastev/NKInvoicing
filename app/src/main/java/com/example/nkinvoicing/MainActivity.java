@@ -30,6 +30,7 @@ MyDatabaseManager dbMngr;
 List<InvoiceData> invoices;
 HashMap<String,InvoiceData> invoiceHashMap;
 Intent refresh;
+Intent editInvoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         refresh=new Intent(this,MainActivity.class);
@@ -38,6 +39,7 @@ Intent refresh;
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
         getCards(this);
+        editInvoice = new Intent(this,ReconstructedStandardInvoice.class);
     }
 
 
@@ -145,6 +147,8 @@ Intent refresh;
 
     private void showInvoice(CardView c) {
         Toast.makeText(this, c.getTag().toString(), Toast.LENGTH_SHORT).show();
+        editInvoice.putExtra("InvoiceData", invoiceHashMap.get(c.getTag()));
+        startActivity(editInvoice);
     }
 
     private boolean selectOptions(final CardView c, boolean clicked) {

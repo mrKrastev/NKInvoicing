@@ -30,7 +30,7 @@ import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class StandardInvoice extends AppCompatActivity {
+public class ReconstructedStandardInvoice extends AppCompatActivity {
 
     private InvoiceData invData;
     private TextView invoiceNo;
@@ -51,15 +51,15 @@ public class StandardInvoice extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.updateBtn){
-            if(saved==false) {
-                db.saveInvoiceToDB(invData);
-                saved=true;
-                Toast.makeText(this, "Invoice Saved!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this,MainActivity.class);
-                startActivity(intent);
-            }else{
-                Toast.makeText(this, "You already saved this invoice!", Toast.LENGTH_SHORT).show();
-            }
+
+                if(db.updateInvoice(invData)) {
+
+                    Toast.makeText(this, "Invoice Updated!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "Update Failed ;c", Toast.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -67,14 +67,14 @@ public class StandardInvoice extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         saved=false;
-        db = new MyDatabaseManager(StandardInvoice.this);
+        db = new MyDatabaseManager(ReconstructedStandardInvoice.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.standard_invoice);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
 
         //setting the contacts object from the invoice data
-        createContacts(invData.getContacts());
+        createContacts(invData.contacts);
         //generating the table from the invoice table items
         createTable(invData.getTableItems());
         //setting the uneditable fields
@@ -328,6 +328,7 @@ public class StandardInvoice extends AppCompatActivity {
         //passing the invoice object to edit the contacts
         Intent contactsEditIntent = new Intent(this,EditContacts.class);
         contactsEditIntent.putExtra("InvoiceData",invData);
+        contactsEditIntent.putExtra("EditString", "EDIT");
         startActivity(contactsEditIntent);
     }
     public void editTable(View view){

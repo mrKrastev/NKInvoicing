@@ -28,6 +28,7 @@
         <activity android:name=".EditContacts" />
         <activity android:name=".InvoiceCreator" />
         <activity android:name=".StandardTableCreator" />
+        <activity android:name=".ReconstructedStandardInvoice" />
     </application>
 
 </manifest>

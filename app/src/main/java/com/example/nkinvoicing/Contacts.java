@@ -46,7 +46,21 @@ public class Contacts implements Serializable {
         this.receiverEmail = receiverEmail;
         ID= UUID.randomUUID().toString();
     }
-    public Contacts(){}
+    public Contacts(String contactID){
+        this.userCompany = " ";
+        this.userAddress = " ";
+        this.userPostcode = " ";
+        this.userTel = " ";
+        this.userCompanyID = " ";
+        this.userEmail = " ";
+        this.receiverCompany = " ";
+        this.receiverAddress = " ";
+        this.receiverPostcode = " ";
+        this.receiverTel = " ";
+        this.receiverCompanyID = " ";
+        this.receiverEmail = " ";
+        ID=contactID;
+    }
     String getContactsID(){
         return ID;
     }

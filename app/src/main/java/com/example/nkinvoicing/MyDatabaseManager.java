@@ -117,7 +117,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
 
     }
     public Contacts getContacts(String contactID){
-        Contacts contacts=new Contacts();
+        Contacts contacts=new Contacts(contactID);
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlStatement ="SELECT * FROM " + CONTACTS_TABLE + " WHERE " + UNIQUE_CONTACTS_CODE + "='"+contactID+"';";
         Cursor cursor = db.rawQuery(sqlStatement,null);
@@ -127,7 +127,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
             contacts.userPostcode=cursor.getString(cursor.getColumnIndex(USER_POSTCODE_COLUMN));
             contacts.receiverPostcode=cursor.getString(cursor.getColumnIndex(RECEIVER_POSTCODE_COLUMN));
             contacts.userAddress=cursor.getString(cursor.getColumnIndex(USER_ADDRESS_COLUMN));
-            contacts.receiverPostcode=cursor.getString(cursor.getColumnIndex(RECEIVER_POSTCODE_COLUMN));
+            contacts.receiverAddress=cursor.getString(cursor.getColumnIndex(RECEIVER_ADDRESS_COLUMN));
             contacts.userTel=cursor.getString(cursor.getColumnIndex(USER_TEL_COLUMN));
             contacts.receiverTel=cursor.getString(cursor.getColumnIndex(RECEIVER_TEL_COLUMN));
             contacts.userCompanyID=cursor.getString(cursor.getColumnIndex(USER_COMPID_COLUMN));
@@ -227,4 +227,23 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         return true;
     }
 
+    public Boolean updateInvoice(InvoiceData invData) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentContacts= new ContentValues();
+        contentContacts.put(USER_NAME_COLUMN,invData.contacts.userCompany);
+        contentContacts.put(RECEIVER_NAME_COLUMN,invData.contacts.receiverCompany);
+        contentContacts.put(USER_POSTCODE_COLUMN,invData.contacts.userPostcode);
+        contentContacts.put(RECEIVER_POSTCODE_COLUMN,invData.contacts.receiverPostcode);
+        contentContacts.put(USER_ADDRESS_COLUMN,invData.contacts.userAddress);
+        contentContacts.put(RECEIVER_ADDRESS_COLUMN,invData.contacts.receiverAddress);
+        contentContacts.put(USER_TEL_COLUMN,invData.contacts.userTel);
+        contentContacts.put(RECEIVER_TEL_COLUMN,invData.contacts.receiverTel);
+        contentContacts.put(USER_COMPID_COLUMN,invData.contacts.userCompanyID);
+        contentContacts.put(RECEIVER_COMPID_COLUMN,invData.contacts.receiverCompanyID);
+        contentContacts.put(USER_EMAIL_COLUMN,invData.contacts.userEmail);
+        contentContacts.put(RECEIVER_EMAIL_COLUMN,invData.contacts.receiverEmail);
+        Boolean result = (db.update(CONTACTS_TABLE, contentContacts, UNIQUE_CONTACTS_CODE+"='"+invData.contacts.getContactsID()+"';", null))>0;
+        db.close();
+        return result;
+    }
 }

@@ -12,6 +12,7 @@ public class EditContacts extends AppCompatActivity {
     Contacts contacts;
     InvoiceData invData;
     Intent backToInvoice;
+    Intent backToRecInvoice;
     // input fields
    private EditText userCompany;
    private EditText userAddress;
@@ -25,16 +26,19 @@ public class EditContacts extends AppCompatActivity {
    private  EditText receiverTel;
    private EditText receiverCompanyID;
    private EditText receiverEmail;
+   String editingExistingInvoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_contacts);
         //Getting the invoice object
         invData =(InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+        editingExistingInvoice = (String) getIntent().getSerializableExtra("EditString");
         //setting the contacts to be edited
         contacts = invData.contacts;
-        //generating intent
+        //generating intents
         backToInvoice = new Intent(this,StandardInvoice.class);
+        backToRecInvoice = new Intent(this,ReconstructedStandardInvoice.class);
         //assigning variables to the input fields
         //retrieving the user input fields
          userCompany = findViewById(R.id.userCompanyInput);
@@ -92,10 +96,14 @@ public class EditContacts extends AppCompatActivity {
         contacts.receiverTel = receiverTel.getText().toString();
         contacts.receiverCompanyID = receiverCompanyID.getText().toString();
         contacts.receiverEmail = receiverEmail.getText().toString();
-
         invData.setContacts(contacts);
 
-       backToInvoice.putExtra("InvoiceData",invData);
-        startActivity(backToInvoice);
+        if(editingExistingInvoice!=null) {
+            backToRecInvoice.putExtra("InvoiceData", invData);
+            startActivity(backToRecInvoice);
+        }else{
+            backToInvoice.putExtra("InvoiceData", invData);
+            startActivity(backToInvoice);
+        }
     }
 }
