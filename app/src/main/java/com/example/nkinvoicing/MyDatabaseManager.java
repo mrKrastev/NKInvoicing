@@ -176,6 +176,19 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
             db.close();
             return false;
         }else{
+            deleteTableItemsFromDB(invData);
+            db.close();
+            return true;
+        }
+    }
+    public boolean deleteTableItemsFromDB(InvoiceData invData){
+        SQLiteDatabase db = getWritableDatabase();
+        String deleteQuery = "DELETE FROM " + ITEMS_TABLE + " WHERE " + UIC_COLUMN+"='"+invData.getID()+"';";
+        Cursor cursor = db.rawQuery(deleteQuery, null);
+        if(cursor.moveToFirst()){
+            db.close();
+            return false;
+        }else{
             db.close();
             return true;
         }
