@@ -10,6 +10,10 @@ public class TableItem implements Serializable {
     private String invoiceID;
 
     public TableItem() {
+        description= " ";
+        date = " ";
+        quantity = 0;
+        price = 0.00;
     }
 
 
