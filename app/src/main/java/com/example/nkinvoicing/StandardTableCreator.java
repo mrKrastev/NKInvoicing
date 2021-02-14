@@ -39,6 +39,9 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
    private HashMap<Integer,TableItem> hsitems;
    private LinearLayout main;
    private ConstraintLayout mainConstr;
+    String dbUpdate=null;
+    private Intent backToRecInvoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hsitems = new HashMap();
@@ -50,8 +53,10 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         mainConstr=(ConstraintLayout) findViewById(R.id.mainConstraint);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+        dbUpdate=(String) getIntent().getSerializableExtra("String");
         //creating an intent for later
-        showInvoice = new Intent(this,StandardInvoice.class);
+            backToRecInvoice = new Intent(this,ReconstructedStandardInvoice.class);
+            showInvoice = new Intent(this, StandardInvoice.class);
         //if the intent comes from invoice creator, tbItems would be empty so we generate an empty table item to fill in, otherwise we prepopulate it
         if(!invData.tbItems.isEmpty()){
             Button forRenaming = findViewById(R.id.confirmInvoiceBtn); //cosmetic change for the button as it would be updating the data rather than generating it
@@ -76,7 +81,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
     }
 
     public void generateItem(TableItem item){
-
+        item.setInvoiceID(invData.getID());
          //creating list to hold everything
         final LinearLayout tempLayout = new LinearLayout(this);
         tempLayout.setOrientation(LinearLayout.VERTICAL);
@@ -338,9 +343,14 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
     }
 
     public void showInvoice(View v){ //moving to the next screen
-        Intent i = new Intent(this,StandardInvoice.class);
-        i.putExtra("InvoiceData", generateInvoiceData()); // calling the finalizing method here
-        startActivity(i);
+        if(dbUpdate!=null){
+            backToRecInvoice.putExtra("InvoiceData", generateInvoiceData());
+        startActivity(backToRecInvoice);
+        }else {
+            Intent i = new Intent(this, StandardInvoice.class);
+            i.putExtra("InvoiceData", generateInvoiceData()); // calling the finalizing method here
+            startActivity(i);
+        }
     }
 
     //_________DATE PICKER IMPLEMENTS______________________________________________________________________

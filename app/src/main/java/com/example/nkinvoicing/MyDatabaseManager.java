@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -158,6 +159,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
                 tbitem.date=cursor.getString(cursor.getColumnIndex(DATE_COLUMN));
                 tbitem.price=cursor.getDouble(cursor.getColumnIndex(PRICE_COLUMN));
                 tbitem.quantity=cursor.getInt(cursor.getColumnIndex(QUANTITY_COLUMN));
+                tbitem.setInvoiceID(cursor.getString(cursor.getColumnIndex(UIC_COLUMN)));
                 items.add(tbitem);
             }while(cursor.moveToNext());
 
@@ -184,6 +186,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
     public boolean deleteTableItemsFromDB(InvoiceData invData){
         SQLiteDatabase db = getWritableDatabase();
         String deleteQuery = "DELETE FROM " + ITEMS_TABLE + " WHERE " + UIC_COLUMN+"='"+invData.getID()+"';";
+        Boolean deleteSuccess = (db.delete(ITEMS_TABLE,UIC_COLUMN+"='"+invData.getID()+"';",null))>0;
         Cursor cursor = db.rawQuery(deleteQuery, null);
         if(cursor.moveToFirst()){
             db.close();
@@ -255,6 +258,20 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         contentContacts.put(RECEIVER_COMPID_COLUMN,invData.contacts.receiverCompanyID);
         contentContacts.put(USER_EMAIL_COLUMN,invData.contacts.userEmail);
         contentContacts.put(RECEIVER_EMAIL_COLUMN,invData.contacts.receiverEmail);
+        Boolean deleteSuccess = (db.delete(ITEMS_TABLE,UIC_COLUMN+"='"+invData.getID()+"';",null))>0;
+            if(invData.tbItems.isEmpty()) {
+                Log.e("oof", "updateInvoice: tbitems is empty huh ;o ");
+            }else{
+                for (TableItem item : invData.tbItems) {
+                ContentValues contentTableItems = new ContentValues();
+                contentTableItems.put(DESCRIPTION_COLUMN, item.description);
+                contentTableItems.put(DATE_COLUMN, item.date);
+                contentTableItems.put(QUANTITY_COLUMN, item.quantity);
+                contentTableItems.put(PRICE_COLUMN, item.price);
+                contentTableItems.put(UIC_COLUMN, invData.getID());
+                db.insert(ITEMS_TABLE, null, contentTableItems);
+            }
+        }
         Boolean result = (db.update(CONTACTS_TABLE, contentContacts, UNIQUE_CONTACTS_CODE+"='"+invData.contacts.getContactsID()+"';", null))>0;
         db.close();
         return result;

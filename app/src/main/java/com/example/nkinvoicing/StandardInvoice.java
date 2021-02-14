@@ -74,9 +74,11 @@ public class StandardInvoice extends AppCompatActivity {
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
 
         //setting the contacts object from the invoice data
-        createContacts(invData.getContacts());
+
+            createContacts(invData.contacts);
+
         //generating the table from the invoice table items
-        createTable(invData.getTableItems());
+        createTable(invData.tbItems);
         //setting the uneditable fields
         issueDate=findViewById(R.id.issueDatelbl);
         invoiceNo = findViewById(R.id.invoiceIDlbl);
