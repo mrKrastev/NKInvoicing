@@ -4,11 +4,15 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +73,7 @@ public class StandardInvoice extends AppCompatActivity {
         saved=false;
         db = new MyDatabaseManager(StandardInvoice.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.standard_invoice);
+        setContentView(R.layout.invoice_preview);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
 
@@ -80,19 +84,19 @@ public class StandardInvoice extends AppCompatActivity {
         //generating the table from the invoice table items
         createTable(invData.tbItems);
         //setting the uneditable fields
-        issueDate=findViewById(R.id.issueDatelbl);
-        invoiceNo = findViewById(R.id.invoiceIDlbl);
-        dueDate = findViewById(R.id.dueDateLbl);
+        issueDate=findViewById(R.id.issueDatelbl2);
+        invoiceNo = findViewById(R.id.invoiceIDlbl2);
+        dueDate = findViewById(R.id.dueDateLbl2);
         issueDate.setText(invData.invoiceDate);
         invoiceNo.setText(invData.invoiceNo);
         dueDate.setText(invData.dueDate);
-        logo=findViewById(R.id.logoImg);
+        logo=findViewById(R.id.logoImg2);
 
        if(invData.logoImage!=null){
            Log.e("uriback",invData.logoImage.toString() );
                 logo.setImageURI(Uri.parse(invData.logoImage.toString()));
         }
-        logoPickerButton=findViewById(R.id.chooseImgBtn);
+        logoPickerButton=findViewById(R.id.chooseImgBtn2);
         logoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,38 +191,74 @@ public class StandardInvoice extends AppCompatActivity {
         receiverEmail.setText(c.receiverEmail);
     }
     public void createTable(List<TableItem> items) {
-        DecimalFormat f = new DecimalFormat("##.00"); //setting 2dp for values in the table
+        DecimalFormat f = new DecimalFormat("#0.00"); //setting 2dp for values in the table
         Double GrossValue=0.00; // setting default value for GROSS
-        TableLayout table = (TableLayout) findViewById(R.id.standard_invoice_table);//getting the table view
+        String rowColor="";
+        TableLayout table = (TableLayout) findViewById(R.id.standard_invoice_table);//getting the table
+        table.setGravity(Gravity.CENTER);
         //Generating the headers of the table---------------------------------------------------------------
+        //size variables:
+        int headerTextSize;
+        int rowTextSize;
+        Boolean sideways;
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            headerTextSize=20;
+            rowTextSize=18;
+            sideways=true;
+        } else {
+            // In portrait
+             headerTextSize=14;
+             rowTextSize=13;
+             sideways=false;
+        }
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int descriptionWidth = (int) (size.x/4.9);
+        int dateWidth = (int) (size.x/10.8);
+        int qtyWidth = (int) (size.x/7.2);
+        int rateWidth = (int) (size.x/7.2);
+        int amountWidth = (int) (size.x/5.0);
+        //generating the fields
         TableRow tableHeaderFields = new TableRow(this);
-        tableHeaderFields.setMinimumHeight(100);
+        tableHeaderFields.setMinimumHeight(TableRow.LayoutParams.WRAP_CONTENT);
+        tableHeaderFields.setGravity(Gravity.CENTER);
+        tableHeaderFields.setBackgroundColor(Color.rgb(37, 69, 30));
         TextView tv0 = new TextView(this);
+        tv0.setGravity(Gravity.LEFT);
         tv0.setText(" Description ");
-        tv0.setTextColor(0xFD206E1A);
-        tv0.setWidth(350);
+        tv0.setTextColor(Color.WHITE);
+        tv0.setWidth(descriptionWidth);
+        tv0.setTextSize(headerTextSize);
         tableHeaderFields.addView(tv0);
         TextView tv5 = new TextView(this);
         tv5.setText(" Date ");
-        tv5.setTextColor(0xFD206E1A);
-        tv5.setWidth(30);
+        tv5.setTextColor(Color.WHITE);
+        tv5.setWidth(dateWidth);
+        tv5.setTextSize(headerTextSize);
+        tv5.setGravity(Gravity.CENTER);
         tableHeaderFields.addView(tv5);
         TextView tv1 = new TextView(this);
-        tv1.setText(" Qty(hours) ");
-        tv1.setTextColor(0xFD206E1A);
-        tv1.setWidth(230);
+        tv1.setText(" Qty(h) ");
+        tv1.setTextColor(Color.WHITE);
+        tv1.setWidth(qtyWidth);
+        tv1.setTextSize(headerTextSize);
         tv1.setGravity(Gravity.CENTER);
         tableHeaderFields.addView(tv1);
         TextView tv2 = new TextView(this);
         tv2.setText(" Rate(£) ");
-        tv2.setWidth(150);
+        tv2.setWidth(rateWidth);
+        tv2.setTextSize(headerTextSize);
         tv2.setGravity(Gravity.CENTER);
-        tv2.setTextColor(0xFD206E1A);
+        tv2.setTextColor(Color.WHITE);
         tableHeaderFields.addView(tv2);
         TextView tv3 = new TextView(this);
         tv3.setText(" Amount (£) ");
-        tv3.setWidth(230);
-        tv3.setTextColor(0xFD206E1A);
+        tv3.setWidth(amountWidth);
+        tv3.setTextColor(Color.WHITE);
+        tv3.setTextSize(headerTextSize);
         tv3.setGravity(Gravity.RIGHT);
         tableHeaderFields.addView(tv3);
         table.addView(tableHeaderFields);
@@ -226,45 +266,78 @@ public class StandardInvoice extends AppCompatActivity {
         //~~~~~~~~~~ Populate table ~~~~~~~~~~~~~~~~~
         for (TableItem item:items) { //looping through each item in the Invoice Data and making a row
             TableRow tbrow = new TableRow(this);
-            tbrow.setMinimumHeight(150);
+            tbrow.setMinimumHeight(TableRow.LayoutParams.WRAP_CONTENT);
+            tbrow.setGravity(Gravity.CENTER);
             //----------------Description field----------------------
             TextView descriptionField = new TextView(this);
             String descriptionValue = item.description;
             descriptionField.setText(descriptionValue);
             descriptionField.setTextColor(Color.BLACK);
             descriptionField.setGravity(Gravity.LEFT);
-            descriptionField.setMaxWidth(350);
+            descriptionField.setMaxWidth(descriptionWidth);
+            descriptionField.setTextSize(rowTextSize);
+            if(!sideways){
+            descriptionField.setMaxLines(1);
+            descriptionField.setEllipsize(TextUtils.TruncateAt.END);
+            }
             tbrow.addView(descriptionField);
             //----------------Date Field------------------------------
             TextView dateField = new TextView(this);
             CharSequence dateValue  = item.date;
             dateField.setText(dateValue);
             dateField.setTextColor(Color.BLACK);
-            dateField.setGravity(Gravity.LEFT);
-            dateField.setMaxWidth(30);
+            dateField.setGravity(Gravity.CENTER);
+            dateField.setMaxWidth(dateWidth);
+            dateField.setTextSize(rowTextSize);
+            if (!sideways) {
+                dateField.setMaxLines(1);
+                dateField.setEllipsize(TextUtils.TruncateAt.END);
+            }
             tbrow.addView(dateField);
             //---------------Quantity Field---------------------------
             TextView qtyField = new TextView(this);
             qtyField.setText(""+item.quantity);
             qtyField.setTextColor(Color.BLACK);
-            qtyField.setMaxWidth(230);
+            qtyField.setMaxWidth(qtyWidth);
             qtyField.setGravity(Gravity.CENTER);
+            qtyField.setTextSize(rowTextSize);
+            if(!sideways) {
+                qtyField.setMaxLines(1);
+                qtyField.setEllipsize(TextUtils.TruncateAt.END);
+            }
             tbrow.addView(qtyField);
             //----------------Price----------------------------------
             TextView priceField = new TextView(this);
             priceField.setText("£"+item.price);
             priceField.setTextColor(Color.BLACK);
             priceField.setGravity(Gravity.CENTER);
-            priceField.setMaxWidth(150);
+            priceField.setMaxWidth(rateWidth);
+            priceField.setTextSize(rowTextSize);
+            if(!sideways) {
+                priceField.setMaxLines(1);
+                priceField.setEllipsize(TextUtils.TruncateAt.END);
+            }
             tbrow.addView(priceField);
             TextView totalField = new TextView(this);
             Double totalFieldValue =item.getAmount();
             totalField.setText("£" + f.format(totalFieldValue));
-            totalField.setMaxWidth(230);
+            totalField.setMaxWidth(amountWidth);
+            totalField.setTextSize(rowTextSize);
+            if(!sideways) {
+                totalField.setMaxLines(1);
+                totalField.setEllipsize(TextUtils.TruncateAt.END);
+            }
             totalField.setTextColor(Color.BLACK);
             totalField.setGravity(Gravity.RIGHT);
             tbrow.addView(totalField);
             GrossValue=GrossValue + totalFieldValue; //accumulating the gross value
+            if(rowColor!="green"){
+                tbrow.setBackgroundColor(Color.rgb(222, 240, 218));
+                rowColor="green";
+            }else{
+                tbrow.setBackgroundColor(Color.rgb(191, 217, 186));
+                rowColor="";
+            }
             table.addView(tbrow);// adding the row to the table
 
         }
@@ -273,17 +346,19 @@ public class StandardInvoice extends AppCompatActivity {
         //~~~~~~Total Before VAT row ~~~~~~~~
         TableRow SUMrow = new TableRow(this);
         SUMrow.setGravity(Gravity.RIGHT);
-        SUMrow.setMinimumHeight(100);
+        SUMrow.setMinimumHeight(TableRow.LayoutParams.WRAP_CONTENT);
         TextView SUMlabel = new TextView(this);
         SUMlabel.setText(" GROSS: ");
+        SUMlabel.setTextSize(rowTextSize);
         SUMlabel.setTextColor(Color.WHITE);
-        SUMlabel.setBackgroundColor(0xFD206E1A);
+        SUMlabel.setBackgroundColor(Color.rgb(69, 79, 31));
         SUMlabel.setGravity(Gravity.LEFT);
         SUMrow.addView(SUMlabel);
         TextView SUMvaluelbl = new TextView(this);
         SUMvaluelbl.setText(f.format(GrossValue));
-        SUMvaluelbl.setTextColor(0xFD206E1A);
-        SUMvaluelbl.setMinimumWidth(250);
+        SUMvaluelbl.setTextSize(rowTextSize);
+        SUMvaluelbl.setTextColor(Color.BLACK);
+        SUMvaluelbl.setMinimumWidth(amountWidth);
         SUMvaluelbl.setGravity(Gravity.RIGHT);
         SUMrow.addView(SUMvaluelbl);
         table.addView(SUMrow);
@@ -291,39 +366,42 @@ public class StandardInvoice extends AppCompatActivity {
         //~~~~~~ VAT/TAX ~~~~~~~~
         TableRow VATrow = new TableRow(this);
         VATrow.setGravity(Gravity.RIGHT);
-        VATrow.setMinimumHeight(100);
+        VATrow.setMinimumHeight(TableRow.LayoutParams.WRAP_CONTENT);
         TextView VATlabel = new TextView(this);
         VATlabel.setText(" TAX: (20%)");
+        VATlabel.setTextSize(rowTextSize);
         VATlabel.setTextColor(Color.WHITE);
-        VATlabel.setBackgroundColor(0xFD206E1A);
+        VATlabel.setBackgroundColor(Color.rgb(93, 125, 79));
         VATlabel.setGravity(Gravity.LEFT);
         VATrow.addView(VATlabel);
         TextView VATvalue = new TextView(this);
         VATvalue.setText("£"+f.format(GrossValue*0.2));
-        VATvalue.setTextColor(0xFD206E1A);
-        VATvalue.setMinimumWidth(250);
+        VATvalue.setTextColor(Color.BLACK);
+        VATvalue.setMinimumWidth(amountWidth);
         VATvalue.setGravity(Gravity.RIGHT);
+        VATvalue.setTextSize(rowTextSize);
         VATrow.addView(VATvalue);
         table.addView(VATrow);
 
         // ~~~~~ Total with VAT ~~~~~~~~~~~~~
         TableRow NETrow = new TableRow(this);
         NETrow.setGravity(Gravity.RIGHT);
-        NETrow.setMinimumHeight(100);
+        NETrow.setMinimumHeight(TableRow.LayoutParams.WRAP_CONTENT);
         TextView NETlabel = new TextView(this);
         NETlabel.setText("TOTAL: ");
+        NETlabel.setTextSize(rowTextSize);
         NETlabel.setTextColor(Color.WHITE);
-        NETlabel.setBackgroundColor(0xFD206E1A);
+        NETlabel.setBackgroundColor(Color.rgb(58, 117, 41));
         NETlabel.setGravity(Gravity.LEFT);
         NETrow.addView(NETlabel);
         TextView NETvalue = new TextView(this);
         NETvalue.setText("£"+f.format((GrossValue*0.8)));
-        NETvalue.setTextColor(0xFD206E1A);
-        NETvalue.setMinimumWidth(250);
+        NETvalue.setTextSize(rowTextSize);
+        NETvalue.setTextColor(Color.BLACK);
+        NETvalue.setMinimumWidth(amountWidth);
         NETvalue.setGravity(Gravity.RIGHT);
         NETrow.addView(NETvalue);
         table.addView(NETrow);
-
     }
 
     public void editContacts(View view){

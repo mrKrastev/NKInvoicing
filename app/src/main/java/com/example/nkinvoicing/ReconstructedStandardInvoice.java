@@ -62,7 +62,7 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
         saved=false;
         db = new MyDatabaseManager(ReconstructedStandardInvoice.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.standard_invoice);
+        setContentView(R.layout.invoice_preview);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
 
@@ -71,19 +71,19 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
         //generating the table from the invoice table items
         createTable(invData.getTableItems());
         //setting the uneditable fields
-        issueDate=findViewById(R.id.issueDatelbl);
-        invoiceNo = findViewById(R.id.invoiceIDlbl);
-        dueDate = findViewById(R.id.dueDateLbl);
+        issueDate=findViewById(R.id.issueDatelbl2);
+        invoiceNo = findViewById(R.id.invoiceIDlbl2);
+        dueDate = findViewById(R.id.dueDateLbl2);
         issueDate.setText(invData.invoiceDate);
         invoiceNo.setText(invData.invoiceNo);
         dueDate.setText(invData.dueDate);
-        logo=findViewById(R.id.logoImg);
+        logo=findViewById(R.id.logoImg2);
 
         if(invData.logoImage!=null){
             Log.e("uriback",invData.logoImage.toString() );
             logo.setImageURI(Uri.parse(invData.logoImage.toString()));
         }
-        logoPickerButton=findViewById(R.id.chooseImgBtn);
+        logoPickerButton=findViewById(R.id.chooseImgBtn2);
         logoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
