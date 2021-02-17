@@ -90,9 +90,15 @@ Intent editInvoice;
             amountLbl.setTextColor(Color.rgb(167, 224, 215));
             amountLbl.setMaxWidth(150);
 
-            statusLbl.setText("Status:Unpaid");// fix this to change ( u re actually having a boolean in the invObject)
+            //set as paid or not
+            if(invObject.invoicePaid){
+                statusLbl.setText("Status:Paid");
+                statusLbl.setTextColor(Color.rgb(60, 249, 96));
+            }else{
+                statusLbl.setText("Status:Unpaid");
+                statusLbl.setTextColor(Color.rgb(249, 127, 117));
+            }
             statusLbl.setTextSize(12);
-            statusLbl.setTextColor(Color.rgb(249, 127, 117));
             statusLbl.setMaxWidth(120);
 
             dueDateLbl.setText("Due: "+invObject.dueDate);
@@ -146,7 +152,6 @@ Intent editInvoice;
     }
 
     private void showInvoice(CardView c) {
-        Toast.makeText(this, c.getTag().toString(), Toast.LENGTH_SHORT).show();
         editInvoice.putExtra("InvoiceData", invoiceHashMap.get(c.getTag()));
         startActivity(editInvoice);
     }
@@ -178,6 +183,19 @@ Intent editInvoice;
             setPaid.setTextColor(Color.WHITE);
             setPaid.setText("Mark Paid");
             setPaid.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            setPaid.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean markedPaid=dbMngr.changeToPaid(c.getTag().toString());
+                    if(markedPaid){
+                        Toast.makeText(MainActivity.this, "Status Updated!", Toast.LENGTH_SHORT).show();
+                        invoiceHashMap.get(c.getTag()).invoicePaid=true;
+                        getCards(MainActivity.this);
+                    }else{
+                        Toast.makeText(MainActivity.this, "Unable to update invoice status :C", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
             LinearLayout btnLayout = new LinearLayout(this);
             btnLayout.setBackgroundColor(Color.argb(120,191, 181, 180));

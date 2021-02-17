@@ -35,6 +35,8 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
     private static final int PERMISSION_CODE=1001;
     MyDatabaseManager db;
     Boolean saved;
+    private ImageView paidStatusImage;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.standard_invoice_menu,menu);
@@ -53,6 +55,9 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
             }else{
                 Toast.makeText(this, "Update Failed ;c", Toast.LENGTH_SHORT).show();
             }
+        }else if(item.getItemId()==R.id.backBtn){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
         return true;
     }
@@ -71,6 +76,10 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
         //generating the table from the invoice table items
         createTable(invData.getTableItems());
         //setting the uneditable fields
+        paidStatusImage =findViewById(R.id.imageView2);
+        if(invData.invoicePaid) {
+            paidStatusImage.setImageDrawable(getResources().getDrawable(R.drawable.paid_stamp_paid_grunge_stamp_sign_icon_editable_vector_illustration_isolated_white_background_123572302));
+        }
         issueDate=findViewById(R.id.issueDatelbl2);
         invoiceNo = findViewById(R.id.invoiceIDlbl2);
         dueDate = findViewById(R.id.dueDateLbl2);

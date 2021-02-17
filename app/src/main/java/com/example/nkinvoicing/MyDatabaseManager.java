@@ -276,4 +276,12 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+    public Boolean changeToPaid(String ID){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentContacts= new ContentValues();
+        contentContacts.put(PAID_COLUMN,Boolean.TRUE);
+        Boolean result = (db.update(INVOICES_TABLE, contentContacts, UNIQUE_INVOICE_CODE+"='"+ID+"';", null))>0;
+        return result;
+    }
 }
