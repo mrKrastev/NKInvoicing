@@ -1,15 +1,20 @@
 package com.example.nkinvoicing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.cardview.widget.CardView;
 import androidx.gridlayout.widget.GridLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -19,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 GridLayout myGrid;
 MyDatabaseManager dbMngr;
-List<InvoiceData> invoices;
+private List<InvoiceData> invoices;
 HashMap<String,InvoiceData> invoiceHashMap;
 Intent refresh;
 Intent editInvoice;
@@ -38,8 +42,53 @@ Intent editInvoice;
         dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
-        getCards(this);
+        invoices = dbMngr.getAllInvoices();
+        invoiceHashMap=new HashMap<>();
+        getCards(this,invoices);
         editInvoice = new Intent(this,ReconstructedStandardInvoice.class);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu,menu);
+        return true;
+    }
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        ActionMenuItemView picker = findViewById(R.id.statusDropdown);
+        switch(item.getItemId()) {
+            case R.id.Paid:
+                // code block
+                picker.setTitle("Status: "+"Paid");
+                getCards(this, (filterPaid(true)));
+                break;
+            case R.id.Unpaid:
+                // code block
+                picker.setTitle("Status: "+"Unpaid");
+                getCards(this, (filterPaid(false)));
+                break;
+            case R.id.OverDue:
+                // code block
+                picker.setTitle("Status: "+"Overdue");
+                break;
+            case R.id.Any:
+                // code block
+                picker.setTitle("Status: "+"Any");
+                getCards(this, dbMngr.getAllInvoices());
+                break;
+        }
+        return true;
+    }
+
+    private List<InvoiceData>filterPaid(Boolean paid){
+        List<InvoiceData> filteredMap=new ArrayList<InvoiceData>();
+        for (String s : invoiceHashMap.keySet()) {
+            if(invoiceHashMap.get(s).invoicePaid==paid){
+                filteredMap.add(invoiceHashMap.get(s));
+            }
+        }
+        return filteredMap;
     }
 
 
@@ -49,11 +98,9 @@ Intent editInvoice;
         startActivity(it);
     }
 
-    public void getCards(final MainActivity view){
+    public void getCards(final MainActivity view, List<InvoiceData> submittedInvoices){
         myGrid.removeAllViews();
-        invoices = dbMngr.getAllInvoices();
-        invoiceHashMap=new HashMap<>();
-        for (InvoiceData invObject:invoices) {
+        for (InvoiceData invObject: submittedInvoices) {
             invoiceHashMap.put(invObject.getID(),invObject);
             final CardView c = new CardView(this);
             TextView objectTitle = new TextView(this);
@@ -169,7 +216,9 @@ Intent editInvoice;
                     boolean deleted=dbMngr.deleteItemFromDB(invoiceHashMap.get(c.getTag()));
                     if(deleted){
                         Toast.makeText(MainActivity.this, "Invoice Deleted!", Toast.LENGTH_LONG).show();
-                        getCards(MainActivity.this);
+                        invoices.remove(invoiceHashMap.get(c.getTag()));
+                        invoiceHashMap.remove(c.getTag());
+                        getCards(MainActivity.this, invoices);
                     }else{
                         Toast.makeText(MainActivity.this, "Unable to delete invoice :C", Toast.LENGTH_SHORT).show();
                     }
@@ -190,7 +239,8 @@ Intent editInvoice;
                     if(markedPaid){
                         Toast.makeText(MainActivity.this, "Status Updated!", Toast.LENGTH_SHORT).show();
                         invoiceHashMap.get(c.getTag()).invoicePaid=true;
-                        getCards(MainActivity.this);
+                        invoices=dbMngr.getAllInvoices();
+                        getCards(MainActivity.this, invoices);
                     }else{
                         Toast.makeText(MainActivity.this, "Unable to update invoice status :C", Toast.LENGTH_SHORT).show();
                     }
