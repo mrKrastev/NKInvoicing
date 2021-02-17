@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -57,6 +61,13 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
             }
         }else if(item.getItemId()==R.id.backBtn){
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else if(item.getItemId()==R.id.shareBtn){
+            Bitmap myImg= getScrollScreenShot((ScrollView) findViewById(R.id.mainScrollView));
+            Intent intent = new Intent(this, InvoiceImage.class);
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            myImg.compress(Bitmap.CompressFormat.PNG, 50, bs);
+            intent.putExtra("IMAGE", bs.toByteArray());
             startActivity(intent);
         }
         return true;
@@ -179,5 +190,41 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
         tableEditIntent.putExtra("InvoiceData",invData);
         tableEditIntent.putExtra("String","EDITTABLE");
         startActivity(tableEditIntent);
+    }
+
+
+    //__________________________________EXPERIMENT_________________________________
+    public Bitmap getScrollScreenShot(ScrollView view) {
+        findViewById(R.id.chooseImgBtn2).setVisibility(View.INVISIBLE);
+        findViewById(R.id.editContactBtn3).setVisibility(View.INVISIBLE);
+        findViewById(R.id.editServicesBtn2).setVisibility(View.INVISIBLE);
+        findViewById(R.id.issueDatelbl3).setVisibility(View.INVISIBLE);
+        if (null != view) {
+            int height = 0;
+//Get the ScrollView correctly
+            for (int i = 0; i < view.getChildCount(); i++) {
+                height += view.getChildAt(i).getHeight();
+            }
+            if (height > 0) {
+// Create a cache to save the cache
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), height, Bitmap.Config.RGB_565);
+
+// Can easily understand Canvas as a drawing board and bitmap is a block canvas
+
+                Canvas canvas = new Canvas(bitmap);
+
+// Draw the contents of the view to the specified canvas Canvas
+                view.draw(canvas);
+                findViewById(R.id.chooseImgBtn2).setVisibility(View.VISIBLE);
+                findViewById(R.id.editContactBtn3).setVisibility(View.VISIBLE);
+                findViewById(R.id.editServicesBtn2).setVisibility(View.VISIBLE);
+                findViewById(R.id.issueDatelbl3).setVisibility(View.VISIBLE);
+                return bitmap;
+            }
+
+        }
+
+        return null;
+
     }
 }

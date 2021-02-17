@@ -3,6 +3,7 @@
     package="com.example.nkinvoicing">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,8 @@
         <activity android:name=".InvoiceCreator" />
         <activity android:name=".StandardTableCreator" />
         <activity android:name=".ReconstructedStandardInvoice" />
+        <activity android:name=".InvoiceImage"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
