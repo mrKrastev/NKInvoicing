@@ -24,7 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,6 +74,11 @@ Intent editInvoice;
             case R.id.OverDue:
                 // code block
                 picker.setTitle("Status: "+"Overdue");
+                try {
+                    getCards(this,filterDate());
+                } catch (ParseException e) {
+                    Toast.makeText(this, "Invalid dates caused a crash", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.Any:
                 // code block
@@ -79,6 +87,23 @@ Intent editInvoice;
                 break;
         }
         return true;
+    }
+
+    private List<InvoiceData> filterDate() throws ParseException {
+        List<InvoiceData> filteredMap=new ArrayList<InvoiceData>();
+        Date date;
+        Date currentDate= new Date();
+        for (String s : invoiceHashMap.keySet()) {
+            if(invoiceHashMap.get(s).dueDate.equals("")){
+                //then the user didnt provide due date so its classed as not overdue
+            }else {
+                date =new SimpleDateFormat("dd/MM/yyyy").parse(invoiceHashMap.get(s).dueDate);
+                if (currentDate.compareTo(date)>0 && !invoiceHashMap.get(s).invoicePaid) {
+                    filteredMap.add(invoiceHashMap.get(s));
+                }
+            }
+        }
+        return filteredMap;
     }
 
     private List<InvoiceData>filterPaid(Boolean paid){
