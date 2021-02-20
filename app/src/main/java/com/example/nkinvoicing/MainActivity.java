@@ -45,9 +45,11 @@ Intent editInvoice;
         dbMngr = new MyDatabaseManager(MainActivity.this);
         setContentView(R.layout.activity_main);
         myGrid = findViewById(R.id.myGrid);
-        invoices = dbMngr.getAllInvoices();
-        invoiceHashMap=new HashMap<>();
-        getCards(this,invoices);
+        if(dbMngr.hasInvoices()) {
+            invoices = dbMngr.getAllInvoices();
+            invoiceHashMap = new HashMap<>();
+            getCards(this, invoices);
+        }
         editInvoice = new Intent(this,ReconstructedStandardInvoice.class);
     }
 
@@ -64,26 +66,34 @@ Intent editInvoice;
             case R.id.Paid:
                 // code block
                 picker.setTitle("Status: "+"Paid");
-                getCards(this, (filterPaid(true)));
+                if(invoiceHashMap!=null) {
+                    getCards(this, (filterPaid(true)));
+                }
                 break;
             case R.id.Unpaid:
                 // code block
                 picker.setTitle("Status: "+"Unpaid");
-                getCards(this, (filterPaid(false)));
+                if(invoiceHashMap!=null) {
+                    getCards(this, (filterPaid(false)));
+                }
                 break;
             case R.id.OverDue:
                 // code block
                 picker.setTitle("Status: "+"Overdue");
-                try {
-                    getCards(this,filterDate());
-                } catch (ParseException e) {
-                    Toast.makeText(this, "Invalid dates caused a crash", Toast.LENGTH_SHORT).show();
+                if(invoiceHashMap!=null) {
+                    try {
+                        getCards(this, filterDate());
+                    } catch (ParseException e) {
+                        Toast.makeText(this, "Invalid dates caused a crash", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case R.id.Any:
                 // code block
-                picker.setTitle("Status: "+"Any");
-                getCards(this, dbMngr.getAllInvoices());
+                if(invoiceHashMap!=null) {
+                    picker.setTitle("Status: " + "Any");
+                    getCards(this, dbMngr.getAllInvoices());
+                }
                 break;
         }
         return true;
@@ -94,12 +104,14 @@ Intent editInvoice;
         Date date;
         Date currentDate= new Date();
         for (String s : invoiceHashMap.keySet()) {
-            if(invoiceHashMap.get(s).dueDate.equals("")){
-                //then the user didnt provide due date so its classed as not overdue
-            }else {
-                date =new SimpleDateFormat("dd/MM/yyyy").parse(invoiceHashMap.get(s).dueDate);
-                if (currentDate.compareTo(date)>0 && !invoiceHashMap.get(s).invoicePaid) {
-                    filteredMap.add(invoiceHashMap.get(s));
+            if(invoiceHashMap.get(s)!=null) {
+                if (invoiceHashMap.get(s).dueDate.equals("")) {
+                    //then the user didnt provide due date so its classed as not overdue
+                } else {
+                    date = new SimpleDateFormat("dd/MM/yyyy").parse(invoiceHashMap.get(s).dueDate);
+                    if (currentDate.compareTo(date) > 0 && !invoiceHashMap.get(s).invoicePaid) {
+                        filteredMap.add(invoiceHashMap.get(s));
+                    }
                 }
             }
         }
@@ -109,8 +121,10 @@ Intent editInvoice;
     private List<InvoiceData>filterPaid(Boolean paid){
         List<InvoiceData> filteredMap=new ArrayList<InvoiceData>();
         for (String s : invoiceHashMap.keySet()) {
-            if(invoiceHashMap.get(s).invoicePaid==paid){
-                filteredMap.add(invoiceHashMap.get(s));
+            if(invoiceHashMap.get(s)!=null) {
+                if (invoiceHashMap.get(s).invoicePaid == paid) {
+                    filteredMap.add(invoiceHashMap.get(s));
+                }
             }
         }
         return filteredMap;

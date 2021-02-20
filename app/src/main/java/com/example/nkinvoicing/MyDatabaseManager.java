@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,20 +43,22 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
     public static final String UIC_COLUMN = "UIC_COLUMN";
     private static final String UNIQUE_INVOICE_CODE ="UNIQUE_INVOICE_CODE" ;
     private static final String UNIQUE_CONTACTS_CODE ="UNIQUE_CONTACTS_CODE" ;
+    private static final String IMAGEURI ="IMAGEURI" ;
 
     public MyDatabaseManager(@Nullable Context context) {
         super(context, "invoices.db", null, 1);
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         String createInvoiceTable= "CREATE TABLE " + INVOICES_TABLE + "( "+
                 UNIQUE_INVOICE_CODE + " PRIMARY KEY, " +
                 INVOICE_NO_COLUMN + " INT, " +
                 ISSUE_DATE_COLUMN + " TEXT, " +
                 DUE_DATE_COLUMN + " TEXT, " +
                 PAID_COLUMN + " BOOL, " +
+                IMAGEURI + " TEXT, " +
                 CONTACTS + " TEXT )";
 
         String createContactsTable= "CREATE TABLE " + CONTACTS_TABLE + "( " +
@@ -104,6 +108,9 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
                 invData.invoicePaid=cursor.getInt(cursor.getColumnIndex(PAID_COLUMN))>0;
                 invData.contacts=getContacts(cursor.getString(cursor.getColumnIndex(CONTACTS)));
                 invData.tbItems=getTableItems(cursor.getString(cursor.getColumnIndex(UNIQUE_INVOICE_CODE)));
+                if(cursor.getString(cursor.getColumnIndex(IMAGEURI))!="") {
+                    invData.logoImage = URI.create(cursor.getString(cursor.getColumnIndex(IMAGEURI)));
+                }
                 invoices.add(invData);
             }while(cursor.moveToNext());
 
@@ -228,6 +235,11 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         contentInvoice.put(CONTACTS,invData.contacts.getContactsID());
         contentInvoice.put(PAID_COLUMN,invData.invoicePaid);
         contentInvoice.put(UNIQUE_INVOICE_CODE,invData.getID());
+        if(invData.logoImage!=null) {
+            contentInvoice.put(IMAGEURI, String.valueOf(invData.logoImage));
+        }else {
+            contentInvoice.put(IMAGEURI, "");
+        }
         //____________SAVING TABLE ITEMS DATA________________________________________
         for (TableItem item:invData.tbItems) {
             contentTableItems.put(DESCRIPTION_COLUMN,item.description);
@@ -272,8 +284,11 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
                 db.insert(ITEMS_TABLE, null, contentTableItems);
             }
         }
+            ContentValues newURI= new ContentValues();
+            newURI.put(IMAGEURI, String.valueOf(invData.logoImage));
+        Boolean imageUpdate = (db.update(INVOICES_TABLE, newURI, UNIQUE_INVOICE_CODE+"='"+invData.getID()+"';", null))>0;
         Boolean result = (db.update(CONTACTS_TABLE, contentContacts, UNIQUE_CONTACTS_CODE+"='"+invData.contacts.getContactsID()+"';", null))>0;
-        db.close();
+
         return result;
     }
 
@@ -283,5 +298,23 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         contentContacts.put(PAID_COLUMN,Boolean.TRUE);
         Boolean result = (db.update(INVOICES_TABLE, contentContacts, UNIQUE_INVOICE_CODE+"='"+ID+"';", null))>0;
         return result;
+    }
+
+    public boolean hasInvoices() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor mCursor = db.rawQuery("SELECT * FROM " + INVOICES_TABLE, null);
+
+        if (mCursor.getCount()==0)
+        {
+            // I AM EMPTY
+            db.close();
+            return false;
+
+        } else
+        {
+            // proceed
+            db.close();
+            return true;
+        }
     }
 }
