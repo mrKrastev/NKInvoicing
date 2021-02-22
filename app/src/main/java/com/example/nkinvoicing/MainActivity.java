@@ -1,16 +1,22 @@
 package com.example.nkinvoicing;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlendMode;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -18,7 +24,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +47,8 @@ private List<InvoiceData> invoices;
 HashMap<String,InvoiceData> invoiceHashMap;
 Intent refresh;
 Intent editInvoice;
+Button reset;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         refresh=new Intent(this,MainActivity.class);
@@ -51,13 +62,63 @@ Intent editInvoice;
             getCards(this, invoices);
         }
         editInvoice = new Intent(this,ReconstructedStandardInvoice.class);
+
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu,menu);
+        MenuItem search = menu.findItem(R.id.app_bar_search);
+        final MenuItem resetBtn = menu.findItem(R.id.resetCards);
+        resetBtn.setVisible(false);
+        SearchView searchbar = (SearchView) search.getActionView();
+        reset = (Button) resetBtn.getActionView();
+        reset.setText("Reset");
+        reset.setTextColor(Color.WHITE);
+        reset.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        reset.setForegroundTintList(ColorStateList.valueOf(Color.WHITE));
+        reset.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getCards(MainActivity.this,invoices);
+                reset.setVisibility(View.INVISIBLE);
+
+            }
+        });
+        searchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                List<InvoiceData> mySearchList=new ArrayList<>();
+                for (InvoiceData i:invoices
+                     ) {
+                    if(i.contacts.receiverAddress.contains(query) || i.contacts.receiverCompany.contains(query)){
+                        mySearchList.add(i);
+                    }
+                }
+                if(mySearchList.isEmpty()){
+                    Toast.makeText(MainActivity.this, "No results :C", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, mySearchList.size()+" Invoices Found!", Toast.LENGTH_SHORT).show();
+                }
+                reset.setVisibility(View.VISIBLE);
+                resetBtn.setVisible(true);
+                getCards(MainActivity.this,mySearchList);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        reset.setVisibility(View.INVISIBLE);
         return true;
     }
+
+
+
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
