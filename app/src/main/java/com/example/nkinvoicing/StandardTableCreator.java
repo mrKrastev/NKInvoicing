@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,6 +25,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.internal.ViewUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,9 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
    private HashMap<Integer,TableItem> hsitems;
    private LinearLayout main;
    private ConstraintLayout mainConstr;
+    String dbUpdate=null;
+    private Intent backToRecInvoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         hsitems = new HashMap();
@@ -48,18 +53,20 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         mainConstr=(ConstraintLayout) findViewById(R.id.mainConstraint);
         //getting the invoice data object
         invData = (InvoiceData) getIntent().getSerializableExtra("InvoiceData");
+        dbUpdate=(String) getIntent().getSerializableExtra("String");
         //creating an intent for later
-        showInvoice = new Intent(this,StandardInvoice.class);
+            backToRecInvoice = new Intent(this,ReconstructedStandardInvoice.class);
+            showInvoice = new Intent(this, StandardInvoice.class);
         //if the intent comes from invoice creator, tbItems would be empty so we generate an empty table item to fill in, otherwise we prepopulate it
         if(!invData.tbItems.isEmpty()){
             Button forRenaming = findViewById(R.id.confirmInvoiceBtn); //cosmetic change for the button as it would be updating the data rather than generating it
             forRenaming.setText("Update Invoice");
             displayInitialData(invData.tbItems);// getting what was already in the table and setting it to the inputs of the table items on screen
         }else{
-        generateItem();}; //if not we just generate an empty input sector
+        generateItem(new TableItem());}; //if not we just generate an empty input sector
         Button addMore=(Button) findViewById(R.id.addMoreBtn);
         addMore.setOnClickListener(new View.OnClickListener() {public void onClick(View v) {
-            generateItem(); //every time the button is clicked, we get another set of inputs with unique names
+            generateItem(new TableItem()); //every time the button is clicked, we get another set of inputs with unique names
             Toast.makeText(StandardTableCreator.this, "New Item Added", Toast.LENGTH_SHORT).show(); //nice message cue that the item is created
         }});
     }
@@ -68,111 +75,25 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         RowCounter=1; //resetting the counter just in case :D
         for (TableItem item:items) { //for each item that came with the invoiceData object, we generate an input sector to edit this specific item
 
-            //setting the labels as the name of the label + the row counter, this way its always unique and the items within the same item have the same number following them
-            //labels:
-            final TextView description = getLabel("Description "+RowCounter);
-            final TextView date = getLabel("Date "+RowCounter);
-            final TextView quantity = getLabel("Quantity "+RowCounter);
-            final TextView price = getLabel("Price "+RowCounter);
-            //inputs
-            final EditText descriptionInp= getTextInput("descriptionInput "+RowCounter);
-            final EditText dateInp= getTextInput("dateInput "+RowCounter);
-            final FloatingActionButton pickDateBtn = getButton(RowCounter);
-            final EditText priceInp= getNumericInput("priceInput "+RowCounter);
-            final EditText qtyInp= getNumericInput("qtyInput "+RowCounter);
-            //setting their initial values ( to be edited)
-            descriptionInp.setText(item.description);
-            dateInp.setText(item.date);
-            priceInp.setText(String.valueOf(item.price));
-            qtyInp.setText(String.valueOf(item.quantity));
-            //creating the collapse trigger as well as the label that goes with it
-            Button collapseRowBtn = new Button(this);
-            collapseRowBtn.setText("Table item "+RowCounter+" ▼");
-            collapseRowBtn.setTextColor(Color.rgb(233, 159, 89));
-            collapseRowBtn.setBackgroundColor(Color.TRANSPARENT);
-            collapseRowBtn.setTextSize(26);
-            collapseRowBtn.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
-            collapseRowBtn.setGravity(Gravity.LEFT);
-            collapseRowBtn.setOnClickListener(new View.OnClickListener() { //upon clicking the button collapse/expand methods should trigger
-                boolean collapsed=false; // flag to know which method should be called
-                //variables to store the initial height of the items (to be used when expanding later)
-                int desHeight;
-                int dateHeight;
-                int priceHeight;
-                int qtyHeight;
-                int desHeightInp;
-                int dateHeightInp;
-                int priceHeightInp;
-                int qtyHeightInp;
-                int pickDateHeight;
-                public void onClick(View v) {
-                    if(!collapsed){
-                        //store heights before:
-                        desHeight = description.getHeight();
-                        dateHeight = date.getHeight();
-                        priceHeight = price.getHeight();
-                        qtyHeight = quantity.getHeight();
-                        desHeightInp = descriptionInp.getHeight();
-                        dateHeightInp = dateInp.getHeight();
-                        priceHeightInp = priceInp.getHeight();
-                        qtyHeightInp = qtyInp.getHeight();
-                        pickDateHeight=pickDateBtn.getHeight();
-
-                        //collapse the labels:
-                        collapse(description,1000,desHeight); //setting the object, the duration of the animation and the initial height to go from
-                        collapse(date,1000,dateHeight);
-                        collapse(price,1000,priceHeight);
-                        collapse(quantity,1000,qtyHeight);
-                        //collapse the inputs:
-                        collapse(descriptionInp,1000,desHeightInp);
-                        collapse(dateInp,1000,dateHeightInp);
-                        collapse(priceInp,1000,priceHeightInp);
-                        collapse(qtyInp,1000,qtyHeightInp);
-                        collapse(pickDateBtn,1000,pickDateHeight);
-
-
-                        collapsed=true; // flagging that the objects have been collapsed
-
-                    }else{
-                        //expand labels:
-
-                        expand(description,1000, desHeight); // expanding by passing the object, the duration, and the target height
-                        expand(price,1000, priceHeight);
-                        expand(quantity,1000, qtyHeight);
-                        expand(date,1000, dateHeight);
-
-                        //expand inputs:
-                        expand(descriptionInp,1000,desHeightInp);
-                        expand(priceInp,1000, priceHeightInp);
-                        expand(qtyInp,1000, qtyHeightInp);
-                        expand(dateInp,1000, dateHeightInp);
-                        expand(pickDateBtn,1000,pickDateHeight);
-
-                        collapsed=false; //flagging again
-                    }
-                }
-            });
-            //adding the collapse button, the labels and the input fields to the main
-            main.addView(collapseRowBtn);
-            main.addView(description);
-            main.addView(descriptionInp);
-            main.addView(date);
-            main.addView(dateInp);
-            main.addView(pickDateBtn);
-            main.addView(quantity);
-            main.addView(qtyInp);
-            main.addView(price);
-            main.addView(priceInp);
-            //adding the item to a hashmap with the id number as a key and  an object ( TableItem ) corresponding to this item section
-            hsitems.put(RowCounter,new TableItem(null,null,0,null));
-
-            RowCounter=RowCounter+1; // setting the counter for the next set of inputs
+          generateItem(item);
 
         }
     }
 
-    public void generateItem(){
+    public void generateItem(TableItem item){
+        item.setInvoiceID(invData.getID());
+         //creating list to hold everything
+        final LinearLayout tempLayout = new LinearLayout(this);
+        tempLayout.setOrientation(LinearLayout.VERTICAL);
+        tempLayout.setGravity(Gravity.CENTER);
+        tempLayout.setTag("listNo"+RowCounter);
+        //creating header
+        final LinearLayout header = new LinearLayout(this);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER);
+        header.setMinimumWidth(LinearLayout.LayoutParams.MATCH_PARENT);
 
+        header.setTag(RowCounter);
         // creating labels
         final TextView description = getLabel("Description "+RowCounter);
         final TextView date = getLabel("Date "+RowCounter);
@@ -184,17 +105,36 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         final FloatingActionButton pickDateBtn = getButton(RowCounter);
         final EditText priceInp= getNumericInput("priceInput "+RowCounter);
         final EditText qtyInp= getNumericInput("qtyInput "+RowCounter);
+        //populating with fake data
+        descriptionInp.setText(item.description);
+        dateInp.setText(item.date);
+        priceInp.setText(String.valueOf(item.price));
+        qtyInp.setText(String.valueOf(item.quantity));
+        //creating delete button
+        Button deleteItemBtn = new Button(this);
+        deleteItemBtn.setText("Delete");
+        deleteItemBtn.setTag("delete"+RowCounter);
+        deleteItemBtn.setBackgroundColor(Color.TRANSPARENT);
+        deleteItemBtn.setTextColor(Color.rgb(249, 96, 60));
+        deleteItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.removeView(tempLayout);
+                main.removeView(header);
+                hsitems.remove(header.getTag());
+            }
+        });
         //creating collapse button
         Button collapseRowBtn = new Button(this);
         collapseRowBtn.setText("Table item "+RowCounter+" ▼");
-        collapseRowBtn.setTextColor(Color.rgb(233, 159, 89));
+        collapseRowBtn.setTextColor(Color.rgb(234, 168, 80));
         collapseRowBtn.setBackgroundColor(Color.TRANSPARENT);
         collapseRowBtn.setTextSize(26);
-        collapseRowBtn.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
         collapseRowBtn.setGravity(Gravity.LEFT);
+        collapseRowBtn.setPadding(0,0,100,0);
         collapseRowBtn.setOnClickListener(new View.OnClickListener() {
             boolean collapsed=false;
-            int desHeight;
+            /*int desHeight;
             int dateHeight;
             int priceHeight;
             int qtyHeight;
@@ -202,12 +142,14 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
             int dateHeightInp;
             int priceHeightInp;
             int qtyHeightInp;
-            int pickDateHeight;
+            int pickDateHeight;*/
+            int layoutHeight;
             public void onClick(View v) {
                 if(!collapsed){
+                    layoutHeight=tempLayout.getHeight();
                     //store heights before:
-                    desHeight = description.getHeight();
-                   dateHeight = date.getHeight();
+                    /*desHeight = description.getHeight();
+                    dateHeight = date.getHeight();
                    priceHeight = price.getHeight();
                     qtyHeight = quantity.getHeight();
                     desHeightInp = descriptionInp.getHeight();
@@ -227,14 +169,15 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
                     collapse(dateInp,1000,dateHeightInp);
                     collapse(priceInp,1000,priceHeightInp);
                     collapse(qtyInp,1000,qtyHeightInp);
-                    collapse(pickDateBtn,1000,pickDateHeight);
+                    collapse(pickDateBtn,1000,pickDateHeight);*/
+                    collapse(tempLayout,1000,layoutHeight);
 
 
                 collapsed=true;
 
             }else{
                 //expand labels:
-
+                /*
                 expand(description,1000, desHeight);
                 expand(price,1000, priceHeight);
                 expand(quantity,1000, qtyHeight);
@@ -246,21 +189,28 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
                     expand(qtyInp,1000, qtyHeightInp);
                     expand(dateInp,1000, dateHeightInp);
                     expand(pickDateBtn,1000,pickDateHeight);
+                    */
+                expand(tempLayout,1000,layoutHeight);
                 collapsed=false;
+
             }
             }
         });
-        //adding views to main
-        main.addView(collapseRowBtn);
-        main.addView(description);
-        main.addView(descriptionInp);
-        main.addView(date);
-        main.addView(pickDateBtn);
-        main.addView(dateInp);
-        main.addView(quantity);
-        main.addView(qtyInp);
-        main.addView(price);
-        main.addView(priceInp);
+        header.addView(collapseRowBtn);
+        header.addView(deleteItemBtn);
+        //adding views to a single layout
+        main.addView(header);
+        tempLayout.addView(description);
+        tempLayout.addView(descriptionInp);
+        tempLayout.addView(date);
+        tempLayout.addView(pickDateBtn);
+        tempLayout.addView(dateInp);
+        tempLayout.addView(quantity);
+        tempLayout.addView(qtyInp);
+        tempLayout.addView(price);
+        tempLayout.addView(priceInp);
+        //adding to main
+        main.addView(tempLayout);
         //updating the hashmap
         hsitems.put(RowCounter,new TableItem(null,null,0,null));
 
@@ -319,7 +269,7 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         input.setSingleLine(false);
         input.setMinimumHeight(150);
         input.setGravity(Gravity.CENTER);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         return input;
     }
     public void pickDate(View view) { //method which makes a calendar to pop up
@@ -373,21 +323,17 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
 
             String qtyName = "qtyInput "+i;
             EditText qty = (EditText) main.findViewWithTag(qtyName);
-            if(String.valueOf(qty.getText()).equals("")){
-                qty.setText("0");
-            }
+
 
             String priceName = "priceInput "+i;
             EditText price = (EditText) main.findViewWithTag(priceName);
-            if(String.valueOf(price.getText()).equals("")){
-                price.setText("0");
-            }
+
             //setting the fields of the object which is related to this key with the corresponding inputs
             hsitems.get(i).setDescription(String.valueOf(description.getText()));
             hsitems.get(i).setDate(String.valueOf(date.getText()));
             hsitems.get(i).setQuantity(Integer.parseInt(String.valueOf(qty.getText())));
             hsitems.get(i).setPrice(Double.parseDouble(String.valueOf(price.getText())));
-
+            hsitems.get(i).setInvoiceID(invData.getID());
             invData.addTableItem(hsitems.get(i)); //adding the object to the invoice data
 
 
@@ -397,9 +343,14 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
     }
 
     public void showInvoice(View v){ //moving to the next screen
-        Intent i = new Intent(this,StandardInvoice.class);
-        i.putExtra("InvoiceData", generateInvoiceData()); // calling the finalizing method here
-        startActivity(i);
+        if(dbUpdate!=null){
+            backToRecInvoice.putExtra("InvoiceData", generateInvoiceData());
+        startActivity(backToRecInvoice);
+        }else {
+            Intent i = new Intent(this, StandardInvoice.class);
+            i.putExtra("InvoiceData", generateInvoiceData()); // calling the finalizing method here
+            startActivity(i);
+        }
     }
 
     //_________DATE PICKER IMPLEMENTS______________________________________________________________________
