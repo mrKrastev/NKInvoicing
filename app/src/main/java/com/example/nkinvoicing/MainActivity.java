@@ -191,7 +191,10 @@ Button reset;
         return filteredMap;
     }
 
-
+    public void switchToMap(View view){
+        Intent it=new Intent(this,MapsActivity.class);
+        startActivity(it);
+    }
 
     public void PickInvoiceType (View view){
         Intent it = new Intent(this,PickInvoice.class);
