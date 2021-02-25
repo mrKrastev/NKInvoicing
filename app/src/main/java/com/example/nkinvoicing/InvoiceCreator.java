@@ -54,11 +54,13 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     private Button userFindAddressBtn;
     //receiver details -----------------------------------------
     private EditText receiverCompany;
-    private EditText receiverAddress;
+    private Spinner receiverAddress;
     private EditText receiverPostcode;
     private EditText receiverTel;
     private EditText receiverCompanyID;
     private EditText receiverEmail;
+    private Button receiverFindAddressBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,7 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
             @Override
             public void onClick(View v) {
                 String postcode=String.valueOf(userPostcode.getText());
-                getAddresses(postcode);
+                getAddresses("user",postcode);
 
             }
         });
@@ -92,17 +94,26 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
         receiverTel = findViewById(R.id.recTelNoInput2);
         receiverCompanyID = findViewById(R.id.recCompanyIDInput2);
         receiverEmail = findViewById(R.id.recEmailInput2);
+        receiverFindAddressBtn=findViewById(R.id.findByPostcodeBtnRec);
+        receiverFindAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postcode=String.valueOf(receiverPostcode.getText());
+                getAddresses("receiver",postcode);
+
+            }
+        });
     }
 
 
-    private void getAddresses(String postcode) {
+    private void getAddresses(final String s, String postcode) {
         final List<String> addresses=new ArrayList<>();
         //do api work here
-        CharSequence apiKey="vrVCjPqswkKpQTttOKmCJA30353";
+        CharSequence apiKey="MPvyb__L3k6lYD96NReROQ30332";
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(InvoiceCreator.this);
         String url ="https://api.getAddress.io/find/"+postcode+"?api-key="+apiKey;
-        // Request a jsonarray response from the provided URL.
+        // Request a jsonObject response from the provided URL.
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -113,13 +124,19 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                     String myNeatAddress;
                     for (int i=0;i<responseArr.length();i++){
                         myAddress = responseArr.getString(i);
-                        myNeatAddress=myAddress.replace(" , , , , ","");
+                        myNeatAddress=myAddress.replace(" , ","");
+                        myNeatAddress=myNeatAddress.replace(",,","");
                         addresses.add(myNeatAddress);
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(InvoiceCreator.this,R.layout.my_spinner_layout,addresses);
                     adapter.setNotifyOnChange(true); //only need to call this once
-                    userAddress.setAdapter(adapter);
-                    userAddress.setVisibility(View.VISIBLE);
+                    if(s.equals("user")) {
+                        userAddress.setAdapter(adapter);
+                        userAddress.setVisibility(View.VISIBLE);
+                    }else{
+                        receiverAddress.setAdapter(adapter);
+                        receiverAddress.setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -130,7 +147,7 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO: Handle error
-                Toast.makeText(InvoiceCreator.this,"Rip: "+error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(InvoiceCreator.this,"Address not found ._.", Toast.LENGTH_SHORT).show();
                 Log.e("IDFK", "onErrorResponse: "+error.toString(), null);
 
 
@@ -178,13 +195,13 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     public void nextInvoiceStage(View view){ // preparing the objects and changing views
         //assigning Contact Details
         Contacts contacts = new Contacts(String.valueOf(userCompany.getText()),
-                String.valueOf(userAddress.getSelectedItem().toString()),
+                userAddress.getSelectedItem().toString(),
                 String.valueOf(userPostcode.getText()),
                 String.valueOf(userTel.getText()),
                 String.valueOf(userCompanyID.getText()),
                 String.valueOf(userEmail.getText()),
                 String.valueOf(receiverCompany.getText()),
-                String.valueOf(receiverAddress.getText()),
+                receiverAddress.getSelectedItem().toString(),
                 String.valueOf(receiverPostcode.getText()),
                 String.valueOf(receiverTel.getText()),
                 String.valueOf(receiverCompanyID.getText()),
