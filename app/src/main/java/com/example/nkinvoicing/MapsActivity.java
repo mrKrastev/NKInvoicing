@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,9 +26,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+    private HashMap<String, InvoiceData> invoicesMap;
+    RequestQueue queue;
+    ArrayList<Marker> markers;
+    private int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        invoicesMap = (HashMap<String,InvoiceData>) getIntent().getSerializableExtra("InvoicesMap");
+        queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+        markers=new ArrayList<>();
+        counter=0;
+        for (String invoiceCode: invoicesMap.keySet()
+        ) {
+            placeInvoice(invoicesMap.get(invoiceCode), this);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(markers!=null){
+            markers.clear();
+            counter=0;
+        }
     }
 
     /**
@@ -51,41 +78,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMaxZoomPreference(17);
-        mMap.setMinZoomPreference(17);
-        // Add a marker in Sydney and move the camera
-        placeInvoice("17 Tysoe Road, Birmingham, United Kingdom", this);
+        mMap.setMinZoomPreference(7);
+
+
+    }
+    private void adjustCamera(){
+        if(counter==invoicesMap.size()-1) {
+            //Calculate the markers to get their position
+            LatLngBounds.Builder b = new LatLngBounds.Builder();
+            for (Marker m : markers) {
+                b.include(m.getPosition());
+            }
+            LatLngBounds bounds = b.build();
+//Change the padding as per needed
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 25, 25, 5);
+            mMap.animateCamera(cu);
+        }
     }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(this, "This works", Toast.LENGTH_SHORT).show();
+        marker.showInfoWindow();
         return false;
     }
 
-    private void placeInvoice(String address, final com.example.nkinvoicing.MapsActivity mapsActivity){
+    private void placeInvoice(final InvoiceData invObject, final MapsActivity mapsActivity){
         String key="pk.1ee96e5268c5902ba346595e1be98f42";
-       String url="https://us1.locationiq.com/v1/search.php?key="+key+"&format=json&q="+address;
-        RequestQueue queue = Volley.newRequestQueue(MapsActivity.this);
+        String url= null;
+        try {
+            url = "https://us1.locationiq.com/v1/search.php?key="+key+"&format=json&q="+ URLEncoder.encode(invObject.contacts.receiverAddress,"UTF-8").replace("+","%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         // Request a jsonObject response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
+                counter++;
+                JSONObject json_obj = new JSONObject();
                 try {
-                    JSONObject json_obj = response.getJSONObject(1);   //get the 3rd item
-                       LatLng myCoordinates = new LatLng(
-                            Double.parseDouble(json_obj.getString("lat")),
-                            Double.parseDouble(json_obj.getString("lon"))
-                    );
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(myCoordinates).title("My marker"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
-                    mMap.setOnMarkerClickListener(mapsActivity);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    for(int i=0;i<response.length();i++) {
+                        if (response.getJSONObject(i).toString().contains("lat") && response.getJSONObject(i).toString().contains("lon")) {
+                            json_obj = response.getJSONObject(i);
+                            break;
+                        }
+                    }
+                    } catch (JSONException ex) {
+                    Toast.makeText(mapsActivity, "Array cant get object", Toast.LENGTH_SHORT).show();
                 }
+                LatLng myCoordinates = null;
+                try {
+                    myCoordinates = new LatLng(
+                                Double.parseDouble(json_obj.getString("lat")),
+                                Double.parseDouble(json_obj.getString("lon"))
+                        );
+                } catch (JSONException ex) {
+                    Toast.makeText(mapsActivity, "Json is null", Toast.LENGTH_SHORT).show();
+                }
+                Marker marker = mMap.addMarker(new MarkerOptions().position(myCoordinates).title(invObject.contacts.receiverCompany+"\n"+invObject.contacts.receiverAddress));
+                markers.add(marker);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
+                    Toast.makeText(mapsActivity, String.valueOf(myCoordinates), Toast.LENGTH_SHORT).show();
+                    mMap.setOnMarkerClickListener(mapsActivity);
 
             }
         }, new Response.ErrorListener() {
@@ -100,6 +156,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 // Access the RequestQueue through your singleton class.
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         queue.add(jsonArrayRequest);
     }
 }

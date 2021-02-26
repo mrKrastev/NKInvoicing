@@ -121,12 +121,15 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                 try {
                     JSONArray responseArr =response.getJSONArray("addresses");
                     String myAddress;
-                    String myNeatAddress;
                     for (int i=0;i<responseArr.length();i++){
                         myAddress = responseArr.getString(i);
-                        myNeatAddress=myAddress.replace(" , ","");
-                        myNeatAddress=myNeatAddress.replace(",,","");
-                        addresses.add(myNeatAddress);
+                        myAddress=myAddress.replace(" , ",",");
+                        myAddress=myAddress.replace(",,,,",",");
+                        myAddress=myAddress.replace(",,,",",");
+                        myAddress=myAddress.replace(",,",",");
+                        myAddress=myAddress.replace(" ,",",");
+
+                        addresses.add(myAddress);
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(InvoiceCreator.this,R.layout.my_spinner_layout,addresses);
                     adapter.setNotifyOnChange(true); //only need to call this once
@@ -194,14 +197,22 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     //~~~~~~~~~~~~~~~~~~~ Buttons methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void nextInvoiceStage(View view){ // preparing the objects and changing views
         //assigning Contact Details
+        String userAddressString="no address";
+        String recAddressString="no address";
+        if(userAddress.getSelectedItem()!=null){
+            userAddressString=userAddress.getSelectedItem().toString();
+        }
+        if(receiverAddress.getSelectedItem()!=null){
+            recAddressString=receiverAddress.getSelectedItem().toString();
+        }
         Contacts contacts = new Contacts(String.valueOf(userCompany.getText()),
-                userAddress.getSelectedItem().toString(),
+                userAddressString,
                 String.valueOf(userPostcode.getText()),
                 String.valueOf(userTel.getText()),
                 String.valueOf(userCompanyID.getText()),
                 String.valueOf(userEmail.getText()),
                 String.valueOf(receiverCompany.getText()),
-                receiverAddress.getSelectedItem().toString(),
+                recAddressString,
                 String.valueOf(receiverPostcode.getText()),
                 String.valueOf(receiverTel.getText()),
                 String.valueOf(receiverCompanyID.getText()),

@@ -193,6 +193,8 @@ Button reset;
 
     public void switchToMap(View view){
         Intent it=new Intent(this,MapsActivity.class);
+        it.putExtra("InvoicesMap",invoiceHashMap);
+        Toast.makeText(this, "Loading Map...", Toast.LENGTH_LONG).show();
         startActivity(it);
     }
 
