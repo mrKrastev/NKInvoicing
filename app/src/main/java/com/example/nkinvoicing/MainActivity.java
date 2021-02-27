@@ -10,14 +10,20 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BlendMode;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +42,8 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +56,47 @@ HashMap<String,InvoiceData> invoiceHashMap;
 Intent refresh;
 Intent editInvoice;
 Button reset;
+private SensorManager sensorManager;
+    private float acelVal;
+    private float acelLast;
+    private float shake;
+
+private final SensorEventListener sensorListener= new SensorEventListener() {
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+    float x = event.values[0];
+    float y = event.values[1];
+    float z = event.values[2];
+    acelLast=acelVal;
+    acelVal=(float) Math.sqrt((double)(x*x)+(y*y)+(z*z));
+    float delta = acelVal-acelLast;
+    shake=shake*0.9f+delta;
+        Log.e("shake", "onSensorChanged: "+delta );
+        if(shake>10){
+            Toast.makeText(MainActivity.this, "Stop shaking me geez...", Toast.LENGTH_SHORT).show();
+            Collections.sort(invoices, new Comparator<InvoiceData>() {
+
+                @Override
+                public int compare(InvoiceData o1, InvoiceData o2) {
+                    return o1.invoicePaid.compareTo(o2.invoicePaid);
+                }
+            });
+            getCards(MainActivity.this,invoices);
+    }
+    }
 
     @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+};
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(sensorListener,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+        acelVal=SensorManager.GRAVITY_EARTH;
+        acelLast=SensorManager.GRAVITY_EARTH;
+        shake=0.00f;
         refresh=new Intent(this,MainActivity.class);
         super.onCreate(savedInstanceState);
         dbMngr = new MyDatabaseManager(MainActivity.this);
@@ -191,7 +237,12 @@ Button reset;
         return filteredMap;
     }
 
-
+    public void switchToMap(View view){
+        Intent it=new Intent(this,MapsActivity.class);
+        it.putExtra("InvoicesMap",invoiceHashMap);
+        Toast.makeText(this, "Loading Map...", Toast.LENGTH_LONG).show();
+        startActivity(it);
+    }
 
     public void PickInvoiceType (View view){
         Intent it = new Intent(this,PickInvoice.class);

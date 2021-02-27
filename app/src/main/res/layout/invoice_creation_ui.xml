@@ -62,113 +62,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constrlayoutUser" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/constrlayoutUser"
-                android:layout_width="407dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17">
 
                 <EditText
-                    android:id="@+id/userAddressInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Address"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userPostcodeInput2" />
-
-                <EditText
-                    android:id="@+id/userTelNoInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Phone Number"
-                    android:inputType="phone"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userAddressInput2" />
-
-                <EditText
-                    android:id="@+id/userCompanyIDInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Company ID"
-                    android:inputType="number"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userEmailInput2" />
-
-                <EditText
-                    android:id="@+id/userEmailInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Email"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userTelNoInput2" />
-
-                <EditText
-                    android:id="@+id/userPostcodeInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Postcode"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userCompanyInput2" />
-
-                <EditText
                     android:id="@+id/userCompanyInput2"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="5dp"
                     android:ellipsize="none"
                     android:ems="10"
                     android:hint="Company Name"
@@ -176,13 +83,94 @@
                     android:maxLines="3"
                     android:scrollHorizontally="false"
                     android:textColor="#68AEDA"
-                    android:textColorHint="#99A5EC"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColorHint="#99A5EC" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/userCompanyIDInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Company ID"
+                    android:inputType="number"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#68AEDA"
+                    android:textColorHint="#99A5EC" />
+
+                <EditText
+                    android:id="@+id/userEmailInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#68AEDA"
+                    android:textColorHint="#99A5EC" />
+
+                <EditText
+                    android:id="@+id/userTelNoInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Phone Number"
+                    android:inputType="phone"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#68AEDA"
+                    android:textColorHint="#99A5EC" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/userPostcodeInput2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:ellipsize="none"
+                        android:ems="10"
+                        android:hint="Postcode"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:scrollHorizontally="false"
+                        android:textColor="#68AEDA"
+                        android:textColorHint="#99A5EC" />
+
+                    <Button
+                        android:id="@+id/findByPostcodeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#252323"
+                        android:foregroundTint="#00C853"
+                        android:text="Find Address"
+                        android:textColor="#55BD60" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/userAddressInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:scrollHorizontally="false"
+                    android:visibility="invisible" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:id="@+id/textView16"
@@ -267,112 +255,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/issueDateInput" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/receiverConstr"
-                android:layout_width="407dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="1dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18">
 
                 <EditText
-                    android:id="@+id/recAddressInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Address"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recPostcodeInput2" />
-
-                <EditText
-                    android:id="@+id/recTelNoInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Phone Number"
-                    android:inputType="phone"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recAddressInput2" />
-
-                <EditText
-                    android:id="@+id/recCompanyIDInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Company ID"
-                    android:inputType="number"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recEmailInput2" />
-
-                <EditText
-                    android:id="@+id/recEmailInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Email"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recTelNoInput2" />
-
-                <EditText
-                    android:id="@+id/recPostcodeInput2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ellipsize="none"
-                    android:ems="10"
-                    android:hint="Postcode"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:scrollHorizontally="false"
-                    android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recCompanyInput2" />
-
-                <EditText
                     android:id="@+id/recCompanyInput2"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="5dp"
                     android:ellipsize="none"
                     android:ems="10"
                     android:hint="Company Name"
@@ -380,13 +277,97 @@
                     android:maxLines="3"
                     android:scrollHorizontally="false"
                     android:textColor="#E18E50"
-                    android:textColorHint="#AF9359"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColorHint="#AF9359" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/recCompanyIDInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Company ID"
+                    android:inputType="number"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#E18E50"
+                    android:textColorHint="#AF9359" />
+
+                <EditText
+                    android:id="@+id/recEmailInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#E18E50"
+                    android:textColorHint="#AF9359" />
+
+                <EditText
+                    android:id="@+id/recTelNoInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Phone Number"
+                    android:inputType="phone"
+                    android:maxLines="3"
+                    android:scrollHorizontally="false"
+                    android:textColor="#E18E50"
+                    android:textColorHint="#AF9359" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/recPostcodeInput2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:ellipsize="none"
+                        android:ems="10"
+                        android:hint="Postcode"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:scrollHorizontally="false"
+                        android:textColor="#E18E50"
+                        android:textColorHint="#AF9359" />
+
+                    <Button
+                        android:id="@+id/findByPostcodeBtnRec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#252323"
+                        android:foregroundTint="#00C853"
+                        android:text="Find Address"
+                        android:textColor="#55BD60" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/recAddressInput2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="none"
+                    android:ems="10"
+                    android:hint="Address"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:scrollHorizontally="false"
+                    android:textColor="#E18E50"
+                    android:textColorHint="#AF9359"
+                    android:visibility="invisible"
+                    />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/issueDateBtn"
@@ -406,6 +387,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
+                android:backgroundTint="#252323"
                 android:clickable="true"
                 android:onClick="pickDueDate"
                 app:backgroundTint="#252323"
