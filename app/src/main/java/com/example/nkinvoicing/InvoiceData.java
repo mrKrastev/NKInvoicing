@@ -22,7 +22,7 @@ public class InvoiceData implements Serializable {
     private String ID;
 
     public InvoiceData(Contacts contacts, String invoiceNo, String invoiceDate, String dueDate) {
-        ID= UUID.randomUUID().toString();
+        ID= invoiceNo+"_"+UUID.randomUUID().toString().substring(0, 4);
         this.contacts = contacts;
         this.tbItems = new ArrayList<>();
         this.invoiceNo = invoiceNo;

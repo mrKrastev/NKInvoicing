@@ -31,8 +31,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class InvoiceCreator extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -195,38 +198,82 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
         processIssueDatePickerResult(year,month,dayOfMonth);
     }
     //~~~~~~~~~~~~~~~~~~~ Buttons methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public void nextInvoiceStage(View view){ // preparing the objects and changing views
-        //assigning Contact Details
-        String userAddressString="no address";
-        String recAddressString="no address";
-        if(userAddress.getSelectedItem()!=null){
-            userAddressString=userAddress.getSelectedItem().toString();
-        }
-        if(receiverAddress.getSelectedItem()!=null){
-            recAddressString=receiverAddress.getSelectedItem().toString();
-        }
-        Contacts contacts = new Contacts(String.valueOf(userCompany.getText()),
-                userAddressString,
-                String.valueOf(userPostcode.getText()),
-                String.valueOf(userTel.getText()),
-                String.valueOf(userCompanyID.getText()),
-                String.valueOf(userEmail.getText()),
-                String.valueOf(receiverCompany.getText()),
-                recAddressString,
-                String.valueOf(receiverPostcode.getText()),
-                String.valueOf(receiverTel.getText()),
-                String.valueOf(receiverCompanyID.getText()),
-                String.valueOf(receiverEmail.getText()));
-        //Creating invoice Object
-        InvoiceData invObj = new InvoiceData(contacts,
-                String.valueOf(invoiceNo.getText()),
-                String.valueOf(issueDate.getText()),
-                String.valueOf(dueDate.getText()));
-        //sending object across
-        Intent passInvoiceData = new Intent(this,StandardTableCreator.class);
-        passInvoiceData.putExtra("InvoiceData",invObj);
-        startActivity(passInvoiceData);
+    public void nextInvoiceStage(View view) throws ParseException { // preparing the objects and changing views
+        //validation
+        Boolean validationPass=true;
 
+        if(invoiceNo.getText().toString().equals("")){
+            Toast.makeText(this, "Please Fill Invoice Number!", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+        if(issueDate.getText().toString().equals("")){
+            Toast.makeText(this, "Please Fill Invoice Issue Date!", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+        if(dueDate.getText().toString().equals("")){
+            Toast.makeText(this, "Please Fill Invoice Due Date!", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+
+        if((!(dueDate.getText().toString().equals(""))) && (!(issueDate.getText().toString().equals("")))) {
+            Date issued = new SimpleDateFormat("dd/MM/yyyy").parse(issueDate.getText().toString());
+            Date due = new SimpleDateFormat("dd/MM/yyyy").parse(dueDate.getText().toString());
+
+            if (issued.compareTo(due) > 0) {
+                Toast.makeText(this, "Due date cannot be before the issue date!", Toast.LENGTH_SHORT).show();
+                validationPass = false;
+            }
+        }
+
+        if(userCompany.getText().toString().equals("")){
+            Toast.makeText(this, "Please add your company name...", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+        if(receiverCompany.getText().toString().equals("")){
+            Toast.makeText(this, "Please add recipient's company name...", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+        if(receiverPostcode.getText().toString().equals("")){
+            Toast.makeText(this, "Please add recipient's postcode...", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+        if(userPostcode.getText().toString().equals("")){
+            Toast.makeText(this, "Please add your company postcode...", Toast.LENGTH_SHORT).show();
+            validationPass=false;
+        }
+
+        if(validationPass) {
+            //assigning Contact Details
+            String userAddressString = "no address";
+            String recAddressString = "no address";
+            if (userAddress.getSelectedItem() != null) {
+                userAddressString = userAddress.getSelectedItem().toString();
+            }
+            if (receiverAddress.getSelectedItem() != null) {
+                recAddressString = receiverAddress.getSelectedItem().toString();
+            }
+            Contacts contacts = new Contacts(String.valueOf(userCompany.getText()),
+                    userAddressString,
+                    String.valueOf(userPostcode.getText()),
+                    String.valueOf(userTel.getText()),
+                    String.valueOf(userCompanyID.getText()),
+                    String.valueOf(userEmail.getText()),
+                    String.valueOf(receiverCompany.getText()),
+                    recAddressString,
+                    String.valueOf(receiverPostcode.getText()),
+                    String.valueOf(receiverTel.getText()),
+                    String.valueOf(receiverCompanyID.getText()),
+                    String.valueOf(receiverEmail.getText()));
+            //Creating invoice Object
+            InvoiceData invObj = new InvoiceData(contacts,
+                    String.valueOf(invoiceNo.getText()),
+                    String.valueOf(issueDate.getText()),
+                    String.valueOf(dueDate.getText()));
+            //sending object across
+            Intent passInvoiceData = new Intent(this, StandardTableCreator.class);
+            passInvoiceData.putExtra("InvoiceData", invObj);
+            startActivity(passInvoiceData);
+        }
     }
 
     public void returnToPick (View view){
