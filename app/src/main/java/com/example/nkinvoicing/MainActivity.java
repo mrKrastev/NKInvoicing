@@ -2,6 +2,7 @@ package com.example.nkinvoicing;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.SearchView;
@@ -10,7 +11,9 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -71,18 +74,21 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
     acelVal=(float) Math.sqrt((double)(x*x)+(y*y)+(z*z));
     float delta = acelVal-acelLast;
     shake=shake*0.9f+delta;
-        Log.e("shake", "onSensorChanged: "+delta );
-        if(shake>10){
-            Toast.makeText(MainActivity.this, "Stop shaking me geez...", Toast.LENGTH_SHORT).show();
-            Collections.sort(invoices, new Comparator<InvoiceData>() {
+        if(shake>10) {
+            if (invoices.isEmpty() || invoices == null) {
+                Toast.makeText(MainActivity.this, "Add invoices first... then shake me again.", Toast.LENGTH_SHORT).show();
+            } else {
+                Collections.sort(invoices, new Comparator<InvoiceData>() {
 
-                @Override
-                public int compare(InvoiceData o1, InvoiceData o2) {
-                    return o1.invoicePaid.compareTo(o2.invoicePaid);
-                }
-            });
-            getCards(MainActivity.this,invoices);
-    }
+                    @Override
+                    public int compare(InvoiceData o1, InvoiceData o2) {
+                        return o1.invoicePaid.compareTo(o2.invoicePaid);
+                    }
+                });
+                getCards(MainActivity.this, invoices);
+                Toast.makeText(MainActivity.this, "Invoices sorted!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -128,7 +134,11 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
         reset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCards(MainActivity.this,invoices);
+                if(invoices==null || invoices.isEmpty()){
+                    Toast.makeText(MainActivity.this, "poof!", Toast.LENGTH_SHORT).show();
+                }else {
+                    getCards(MainActivity.this, invoices);
+                }
                 reset.setVisibility(View.INVISIBLE);
 
             }
@@ -137,10 +147,14 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 List<InvoiceData> mySearchList=new ArrayList<>();
-                for (InvoiceData i:invoices
-                     ) {
-                    if(i.contacts.receiverAddress.contains(query) || i.contacts.receiverCompany.contains(query)){
-                        mySearchList.add(i);
+                if(invoices==null || invoices.isEmpty()){
+                    Toast.makeText(MainActivity.this, "There is nothing to search...", Toast.LENGTH_SHORT).show();
+                }else {
+                    for (InvoiceData i : invoices
+                    ) {
+                        if (i.contacts.receiverAddress.contains(query) || i.contacts.receiverCompany.contains(query)) {
+                            mySearchList.add(i);
+                        }
                     }
                 }
                 if(mySearchList.isEmpty()){
@@ -238,10 +252,14 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
     }
 
     public void switchToMap(View view){
-        Intent it=new Intent(this,MapsActivity.class);
-        it.putExtra("InvoicesMap",invoiceHashMap);
-        Toast.makeText(this, "Loading Map...", Toast.LENGTH_LONG).show();
-        startActivity(it);
+        if(invoices==null || invoices.isEmpty()){
+            Toast.makeText(this, "There are no invoices to see on the map...", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent it = new Intent(this, MapsActivity.class);
+            it.putExtra("InvoicesMap", invoiceHashMap);
+            Toast.makeText(this, "Loading Map...", Toast.LENGTH_LONG).show();
+            startActivity(it);
+        }
     }
 
     public void PickInvoiceType (View view){
@@ -255,11 +273,12 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             invoiceHashMap.put(invObject.getID(),invObject);
             final CardView c = new CardView(this);
             TextView objectTitle = new TextView(this);
+            TextView invID = new TextView(this);
             TextView amountLbl = new TextView(this);
             TextView dueDateLbl = new TextView(this);
             TextView issueDateLbl = new TextView(this);
             TextView statusLbl = new TextView(this);
-             TextView[] mylabels = {objectTitle,amountLbl,dueDateLbl,issueDateLbl,statusLbl};
+             TextView[] mylabels = {objectTitle,amountLbl,dueDateLbl,issueDateLbl,statusLbl,invID};
             LinearLayout mainLinearLayout = new LinearLayout(this);
             LinearLayout vlayout = new LinearLayout(this);
             vlayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -277,6 +296,10 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             objectTitle.setText(invObject.contacts.receiverCompany);
             objectTitle.setTextSize(15);
             objectTitle.setTextColor(Color.rgb(244, 199, 163));
+
+            invID.setText("ID: "+invObject.getID());
+            invID.setTextSize(12);
+            invID.setTextColor(Color.rgb(217, 207, 121));
 
             issueDateLbl.setText("Issue Date: "+invObject.invoiceDate);
             issueDateLbl.setTextSize(12);
@@ -303,12 +326,10 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             dueDateLbl.setTextSize(12);
             dueDateLbl.setTextColor(Color.rgb(195, 174, 211));
 
-            Bitmap bmp;
-            int width=300;
-            int height=300;
-            bmp= BitmapFactory.decodeResource(getResources(),R.drawable.photo_add_roundedblack_512);//image is your image
-            bmp= Bitmap.createScaledBitmap(bmp, width,height, true);
-            img.setImageBitmap(bmp);
+            img.setImageResource(R.drawable.standard_invoice_image_preview);
+            img.setMaxHeight(300);
+            img.setMaxWidth(300);
+            img.setAdjustViewBounds(true);
             img.setPadding(10,10,10,10);
 
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -318,6 +339,7 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
 
             mainLinearLayout.addView(img);
             mainLinearLayout.addView(objectTitle);
+            mainLinearLayout.addView(invID);
             mainLinearLayout.addView(issueDateLbl);
             vlayout.addView(amountLbl);
             vlayout.addView(statusLbl);
@@ -364,20 +386,33 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             delete.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean deleted=dbMngr.deleteItemFromDB(invoiceHashMap.get(c.getTag()));
-                    if(deleted){
-                        Toast.makeText(MainActivity.this, "Invoice Deleted!", Toast.LENGTH_LONG).show();
-                        invoices.remove(invoiceHashMap.get(c.getTag()));
-                        invoiceHashMap.remove(c.getTag());
-                        getCards(MainActivity.this, invoices);
-                    }else{
-                        Toast.makeText(MainActivity.this, "Unable to delete invoice :C", Toast.LENGTH_SHORT).show();
-                    }
+                    //_________________________YES OR NO DIALOGUE_______________________________________
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    boolean deleted=dbMngr.deleteItemFromDB(invoiceHashMap.get(c.getTag()));
+                                    if(deleted){
+                                        Toast.makeText(MainActivity.this, "Invoice Deleted!", Toast.LENGTH_LONG).show();
+                                        invoices.remove(invoiceHashMap.get(c.getTag()));
+                                        invoiceHashMap.remove(c.getTag());
+                                        getCards(MainActivity.this, invoices);
+                                    }else{
+                                        Toast.makeText(MainActivity.this, "Unable to delete invoice :C", Toast.LENGTH_SHORT).show();
+                                    }                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Do you really wish to delete Invoice ["+c.getTag()+"] ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
                 }
             });
-
-
-
             Button setPaid = new Button(this);
             setPaid.setBackgroundColor(Color.rgb(90, 153, 167));
             setPaid.setTextColor(Color.WHITE);
@@ -415,4 +450,5 @@ private final SensorEventListener sensorListener= new SensorEventListener() {
             return false;
         }
     }
+
 }

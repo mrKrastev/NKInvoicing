@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="205dp"
+        android:layout_width="195dp"
         android:layout_height="366dp"
         android:background="#E8E8E8"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/portrait_img_preview" />
 
     <Button
         android:id="@+id/pickButton"
@@ -25,6 +25,8 @@
         android:layout_marginBottom="72dp"
         android:onClick="selectInvoice"
         android:text="Choose"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -59,7 +59,7 @@ public class ReconstructedStandardInvoice extends StandardInvoice {
             }else{
                 Toast.makeText(this, "Update Failed ;c", Toast.LENGTH_SHORT).show();
             }
-        }else if(item.getItemId()==R.id.backBtn){
+        }else if(item.getItemId()==R.id.backToMain){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else if(item.getItemId()==R.id.shareBtn){

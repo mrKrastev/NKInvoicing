@@ -1,9 +1,14 @@
 package com.example.nkinvoicing;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,7 +36,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private HashMap<String, InvoiceData> invoicesMap;
@@ -82,23 +87,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
-    private void adjustCamera(){
-        if(counter==invoicesMap.size()-1) {
-            //Calculate the markers to get their position
-            LatLngBounds.Builder b = new LatLngBounds.Builder();
-            for (Marker m : markers) {
-                b.include(m.getPosition());
-            }
-            LatLngBounds bounds = b.build();
-//Change the padding as per needed
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 25, 25, 5);
-            mMap.animateCamera(cu);
-        }
-    }
+
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
         marker.showInfoWindow();
         return false;
     }
@@ -137,7 +131,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (JSONException ex) {
                     Toast.makeText(mapsActivity, "Json is null", Toast.LENGTH_SHORT).show();
                 }
-                Marker marker = mMap.addMarker(new MarkerOptions().position(myCoordinates).title(invObject.contacts.receiverCompany+"\n"+invObject.contacts.receiverAddress));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(myCoordinates).title(invObject.contacts.receiverCompany+"["+invObject.getID()+"]"));
+                marker.setSnippet("Issue Date: "+invObject.invoiceDate);
                 markers.add(marker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(myCoordinates));
                     Toast.makeText(mapsActivity, String.valueOf(myCoordinates), Toast.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package com.example.nkinvoicing;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,7 +52,7 @@ public class StandardInvoice extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.standard_invoice_menu,menu);
+        getMenuInflater().inflate(R.menu.invoice_preview_menu,menu);
         return true;
     }
 
@@ -66,6 +68,27 @@ public class StandardInvoice extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "You already saved this invoice!", Toast.LENGTH_SHORT).show();
             }
+        }else{
+            //_________________________YES OR NO DIALOGUE_______________________________________
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            Intent it = new Intent(StandardInvoice.this,MainActivity.class);
+                            startActivity(it);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(StandardInvoice.this);
+            builder.setMessage("Yor progress on this invoice will be lost. Do you wish to proceed?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -362,7 +385,7 @@ public class StandardInvoice extends AppCompatActivity {
         SUMlabel.setGravity(Gravity.LEFT);
         SUMrow.addView(SUMlabel);
         TextView SUMvaluelbl = new TextView(this);
-        SUMvaluelbl.setText(f.format(GrossValue));
+        SUMvaluelbl.setText("£"+f.format(GrossValue));
         SUMvaluelbl.setTextSize(rowTextSize);
         SUMvaluelbl.setTextColor(Color.BLACK);
         SUMvaluelbl.setMinimumWidth(amountWidth);
@@ -402,7 +425,7 @@ public class StandardInvoice extends AppCompatActivity {
         NETlabel.setGravity(Gravity.LEFT);
         NETrow.addView(NETlabel);
         TextView NETvalue = new TextView(this);
-        NETvalue.setText("£"+f.format((GrossValue*0.8)));
+        NETvalue.setText("£"+f.format((GrossValue*1.2)));
         NETvalue.setTextSize(rowTextSize);
         NETvalue.setTextColor(Color.BLACK);
         NETvalue.setMinimumWidth(amountWidth);

@@ -28,8 +28,10 @@
         android:background="#000000"
         android:foregroundGravity="bottom"
         android:onClick="showInvoice"
-        android:text="Generate Invoice"
+        android:text="Save and Continue"
+        android:textAllCaps="false"
         android:textColor="#9ED3B4"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -45,7 +47,9 @@
         android:foregroundGravity="bottom"
         android:onClick="showInvoice"
         android:text="Add Another Item"
+        android:textAllCaps="false"
         android:textColor="#C69F81"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
