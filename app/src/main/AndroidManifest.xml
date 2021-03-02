@@ -35,7 +35,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="NK Invoicing Map"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,10 +46,9 @@
         </activity>
         <activity
             android:name=".PickInvoice"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".StandardInvoice"
-            android:parentActivityName=".PickInvoice" />
+            android:name=".StandardInvoice" />
         <activity android:name=".EditContacts" />
         <activity android:name=".InvoiceCreator" />
         <activity android:name=".StandardTableCreator" />

@@ -112,6 +112,8 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         qtyInp.setText(String.valueOf(item.quantity));
         //creating delete button
         Button deleteItemBtn = new Button(this);
+        deleteItemBtn.setAllCaps(false);
+        deleteItemBtn.setTextSize(15);
         deleteItemBtn.setText("Delete");
         deleteItemBtn.setTag("delete"+RowCounter);
         deleteItemBtn.setBackgroundColor(Color.TRANSPARENT);
@@ -125,8 +127,9 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
             }
         });
         //creating collapse button
-        Button collapseRowBtn = new Button(this);
-        collapseRowBtn.setText("Table item "+RowCounter+" ▼");
+        final Button collapseRowBtn = new Button(this);
+        collapseRowBtn.setAllCaps(false);
+        collapseRowBtn.setText("Table Item "+"▼");
         collapseRowBtn.setTextColor(Color.rgb(234, 168, 80));
         collapseRowBtn.setBackgroundColor(Color.TRANSPARENT);
         collapseRowBtn.setTextSize(26);
@@ -134,64 +137,19 @@ public class StandardTableCreator extends AppCompatActivity implements DatePicke
         collapseRowBtn.setPadding(0,0,100,0);
         collapseRowBtn.setOnClickListener(new View.OnClickListener() {
             boolean collapsed=false;
-            /*int desHeight;
-            int dateHeight;
-            int priceHeight;
-            int qtyHeight;
-            int desHeightInp;
-            int dateHeightInp;
-            int priceHeightInp;
-            int qtyHeightInp;
-            int pickDateHeight;*/
+
             int layoutHeight;
             public void onClick(View v) {
                 if(!collapsed){
                     layoutHeight=tempLayout.getHeight();
-                    //store heights before:
-                    /*desHeight = description.getHeight();
-                    dateHeight = date.getHeight();
-                   priceHeight = price.getHeight();
-                    qtyHeight = quantity.getHeight();
-                    desHeightInp = descriptionInp.getHeight();
-                    dateHeightInp = dateInp.getHeight();
-                    pickDateHeight = pickDateBtn.getHeight();
-                    priceHeightInp = priceInp.getHeight();
-                    qtyHeightInp = qtyInp.getHeight();
-
-
-                //collapse the labels:
-                collapse(description,1000,desHeight);
-                collapse(date,1000,dateHeight);
-                collapse(price,1000,priceHeight);
-                collapse(quantity,1000,qtyHeight);
-                //collapse the inputs:
-                    collapse(descriptionInp,1000,desHeightInp);
-                    collapse(dateInp,1000,dateHeightInp);
-                    collapse(priceInp,1000,priceHeightInp);
-                    collapse(qtyInp,1000,qtyHeightInp);
-                    collapse(pickDateBtn,1000,pickDateHeight);*/
                     collapse(tempLayout,1000,layoutHeight);
-
-
                 collapsed=true;
+                collapseRowBtn.setText("Table Item "+"►");
 
             }else{
-                //expand labels:
-                /*
-                expand(description,1000, desHeight);
-                expand(price,1000, priceHeight);
-                expand(quantity,1000, qtyHeight);
-                expand(date,1000, dateHeight);
-
-                //expand inputs:
-                    expand(descriptionInp,1000,desHeightInp);
-                    expand(priceInp,1000, priceHeightInp);
-                    expand(qtyInp,1000, qtyHeightInp);
-                    expand(dateInp,1000, dateHeightInp);
-                    expand(pickDateBtn,1000,pickDateHeight);
-                    */
                 expand(tempLayout,1000,layoutHeight);
                 collapsed=false;
+                    collapseRowBtn.setText("Table Item "+"▼");
 
             }
             }

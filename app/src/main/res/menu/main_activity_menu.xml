@@ -4,31 +4,32 @@
 
     <item
         android:id="@+id/resetCards"
+        android:textAllCaps="false"
         android:title="Reset"
-        app:showAsAction="always"
         app:actionViewClass="android.widget.Button"
-        />
+        app:showAsAction="always" />
     <item
         android:id="@+id/statusDropdown"
+        android:textAllCaps="false"
         android:title="Status: Any"
         app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/Paid"
                 android:title="Paid"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/Unpaid"
                 android:title="Unpaid"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/OverDue"
                 android:title="Overdue"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/Any"
                 android:title="Any Status"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
         </menu>
     </item>
     <item

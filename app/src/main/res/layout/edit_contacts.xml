@@ -270,6 +270,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:textAllCaps="false"
         android:id="@+id/confirmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -282,6 +283,7 @@
         app:layout_constraintStart_toEndOf="@+id/cancelBtn" />
 
     <Button
+        android:textAllCaps="false"
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

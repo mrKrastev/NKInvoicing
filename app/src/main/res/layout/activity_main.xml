@@ -22,6 +22,7 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <Button
+        android:textAllCaps="false"
         android:id="@+id/mapToggleBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +30,7 @@
         android:onClick="switchToMap"
         android:text="Switch To Map View"
         android:textColor="#00C853"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -33,8 +33,11 @@
             android:background="#000000"
             android:textColor="#68AEDA"
                 android:onClick="nextInvoiceStage"
-            />
+                android:textAllCaps="false"
+
+                />
             <Button
+                android:textAllCaps="false"
                 android:id="@+id/cancelBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,7 +157,10 @@
                         android:backgroundTint="#252323"
                         android:foregroundTint="#00C853"
                         android:text="Find Address"
-                        android:textColor="#55BD60" />
+                        android:textSize="16dp"
+                        android:textColor="#55BD60"
+                        android:textAllCaps="false"
+                        />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -341,6 +347,7 @@
                         android:textColorHint="#AF9359" />
 
                     <Button
+                        android:textAllCaps="false"
                         android:id="@+id/findByPostcodeBtnRec"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -348,6 +355,7 @@
                         android:backgroundTint="#252323"
                         android:foregroundTint="#00C853"
                         android:text="Find Address"
+                        android:textSize="16dp"
                         android:textColor="#55BD60" />
                 </LinearLayout>
 
