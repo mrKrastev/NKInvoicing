@@ -60,6 +60,7 @@ public class StandardInvoice extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.updateBtn){
             if(saved==false) {
+                db.updateUserLogo(invData.logoImage.toString());
                 db.saveInvoiceToDB(invData);
                 saved=true;
                 Toast.makeText(this, "Invoice Saved!", Toast.LENGTH_LONG).show();
@@ -125,7 +126,13 @@ public class StandardInvoice extends AppCompatActivity {
        if(invData.logoImage!=null){
            Log.e("uriback",invData.logoImage.toString() );
                 logo.setImageURI(Uri.parse(invData.logoImage.toString()));
-        }
+        }else{
+           Contacts savedContacts=db.getUserSavedDetails();
+           if(savedContacts!=null){
+               logo.setImageURI(Uri.parse(savedContacts.userLogo));
+               Log.e("logo", "onCreate: "+savedContacts.userLogo );
+           }
+       }
         logoPickerButton=findViewById(R.id.chooseImgBtn2);
         logoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override

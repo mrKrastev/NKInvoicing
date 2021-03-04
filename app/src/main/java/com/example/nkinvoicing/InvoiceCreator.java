@@ -63,11 +63,17 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     private EditText receiverCompanyID;
     private EditText receiverEmail;
     private Button receiverFindAddressBtn;
+    private MyDatabaseManager db;
+    private Contacts savedContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invoice_creation_ui);
+        db=new MyDatabaseManager(InvoiceCreator.this);
+        if(db.hasSavedDetails()) {
+            savedContacts = db.getUserSavedDetails();
+        }
         //assigning invoice variables
         issueDate = findViewById(R.id.issueDateInput);
         dueDate = findViewById(R.id.dueDateInput);
@@ -89,7 +95,13 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
 
             }
         });
-
+        if(savedContacts!=null){
+            userCompany.setText(savedContacts.userCompany);
+            userPostcode.setText(savedContacts.userPostcode);
+            userTel.setText(savedContacts.userTel);
+            userCompanyID.setText(savedContacts.userCompanyID);
+            userEmail.setText(savedContacts.userEmail);
+        }
         //receiver
         receiverCompany = findViewById(R.id.recCompanyInput2);
         receiverAddress = findViewById(R.id.recAddressInput2);
@@ -285,6 +297,11 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                     String.valueOf(invoiceNo.getText()),
                     String.valueOf(issueDate.getText()),
                     String.valueOf(dueDate.getText()));
+            if(savedContacts==null){
+                db.saveUserDetails(contacts);
+            }else{
+                db.updateUserDetails(contacts);
+            }
             //sending object across
             Intent passInvoiceData = new Intent(this, StandardTableCreator.class);
             passInvoiceData.putExtra("InvoiceData", invObj);
