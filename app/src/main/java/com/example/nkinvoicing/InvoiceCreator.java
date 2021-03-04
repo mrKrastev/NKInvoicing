@@ -131,8 +131,24 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                         myAddress=myAddress.replace(",,,",",");
                         myAddress=myAddress.replace(",,",",");
                         myAddress=myAddress.replace(" ,",",");
+                        myAddress=myAddress.replace(",",", ");
+                        String[] addressParts= myAddress.split(",");
+                        String neatAddress="";
+                            if(addressParts.length>2){
+                                for (int z=0;z<addressParts.length;z++) {
+                                    if(z==1){}else {
+                                        if(z==(addressParts.length-1)) {
+                                            neatAddress = neatAddress+addressParts[z];
+                                        }else{
+                                            neatAddress = neatAddress+addressParts[z] + ",";
+                                        }
+                                    }
+                                }
+                            }else{
+                                neatAddress=myAddress;
+                            }
 
-                        addresses.add(myAddress);
+                        addresses.add(neatAddress);
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(InvoiceCreator.this,R.layout.my_spinner_layout,addresses);
                     adapter.setNotifyOnChange(true); //only need to call this once
@@ -244,8 +260,8 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
 
         if(validationPass) {
             //assigning Contact Details
-            String userAddressString = "no address";
-            String recAddressString = "no address";
+            String userAddressString = "";
+            String recAddressString = "";
             if (userAddress.getSelectedItem() != null) {
                 userAddressString = userAddress.getSelectedItem().toString();
             }

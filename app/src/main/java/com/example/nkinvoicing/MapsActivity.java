@@ -42,7 +42,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private HashMap<String, InvoiceData> invoicesMap;
     RequestQueue queue;
     ArrayList<Marker> markers;
-    private int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +54,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         invoicesMap = (HashMap<String,InvoiceData>) getIntent().getSerializableExtra("InvoicesMap");
         queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         markers=new ArrayList<>();
-        counter=0;
         for (String invoiceCode: invoicesMap.keySet()
         ) {
-            placeInvoice(invoicesMap.get(invoiceCode), this);
+            if(invoicesMap.get(invoiceCode).contacts.receiverAddress.equals("")){
+
+            }else {
+                placeInvoice(invoicesMap.get(invoiceCode), this);
+            }
         }
     }
 
@@ -67,7 +69,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onResume();
         if(markers!=null){
             markers.clear();
-            counter=0;
         }
     }
 
@@ -101,7 +102,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String key="pk.1ee96e5268c5902ba346595e1be98f42";
         String url= null;
         try {
-            url = "https://us1.locationiq.com/v1/search.php?key="+key+"&format=json&q="+ URLEncoder.encode(invObject.contacts.receiverAddress,"UTF-8").replace("+","%20");
+            url = "https://eu1.locationiq.com/v1/search.php?key="+key+"&format=json&q="+ URLEncoder.encode(invObject.contacts.receiverAddress,"UTF-8").replace("+","%20");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -110,15 +111,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onResponse(JSONArray response) {
-                counter++;
                 JSONObject json_obj = new JSONObject();
                 try {
-                    for(int i=0;i<response.length();i++) {
-                        if (response.getJSONObject(i).toString().contains("lat") && response.getJSONObject(i).toString().contains("lon")) {
-                            json_obj = response.getJSONObject(i);
-                            break;
-                        }
-                    }
+                    json_obj = response.getJSONObject(0);
                     } catch (JSONException ex) {
                     Toast.makeText(mapsActivity, "Array cant get object", Toast.LENGTH_SHORT).show();
                 }

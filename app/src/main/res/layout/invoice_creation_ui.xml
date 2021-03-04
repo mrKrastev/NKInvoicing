@@ -234,6 +234,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <EditText
+                android:enabled="false"
                 android:id="@+id/issueDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -248,6 +249,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/invoiceNoInput" />
 
             <EditText
+                android:enabled="false"
                 android:id="@+id/dueDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
