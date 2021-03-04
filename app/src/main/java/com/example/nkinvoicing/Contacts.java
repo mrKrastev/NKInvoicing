@@ -11,6 +11,7 @@ public class Contacts implements Serializable {
     String userTel;
     String userCompanyID;
     String userEmail;
+    String userLogo=null;
     //--------------------------------------------------------------------------
     String receiverCompany;
     String receiverAddress;

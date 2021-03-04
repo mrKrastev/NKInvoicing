@@ -63,11 +63,17 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     private EditText receiverCompanyID;
     private EditText receiverEmail;
     private Button receiverFindAddressBtn;
+    private MyDatabaseManager db;
+    private Contacts savedContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invoice_creation_ui);
+        db=new MyDatabaseManager(InvoiceCreator.this);
+        if(db.hasSavedDetails()) {
+            savedContacts = db.getUserSavedDetails();
+        }
         //assigning invoice variables
         issueDate = findViewById(R.id.issueDateInput);
         dueDate = findViewById(R.id.dueDateInput);
@@ -89,7 +95,13 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
 
             }
         });
-
+        if(savedContacts!=null){
+            userCompany.setText(savedContacts.userCompany);
+            userPostcode.setText(savedContacts.userPostcode);
+            userTel.setText(savedContacts.userTel);
+            userCompanyID.setText(savedContacts.userCompanyID);
+            userEmail.setText(savedContacts.userEmail);
+        }
         //receiver
         receiverCompany = findViewById(R.id.recCompanyInput2);
         receiverAddress = findViewById(R.id.recAddressInput2);
@@ -131,8 +143,24 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                         myAddress=myAddress.replace(",,,",",");
                         myAddress=myAddress.replace(",,",",");
                         myAddress=myAddress.replace(" ,",",");
+                        myAddress=myAddress.replace(",",", ");
+                        String[] addressParts= myAddress.split(",");
+                        String neatAddress="";
+                            if(addressParts.length>2){
+                                for (int z=0;z<addressParts.length;z++) {
+                                    if(z==1){}else {
+                                        if(z==(addressParts.length-1)) {
+                                            neatAddress = neatAddress+addressParts[z];
+                                        }else{
+                                            neatAddress = neatAddress+addressParts[z] + ",";
+                                        }
+                                    }
+                                }
+                            }else{
+                                neatAddress=myAddress;
+                            }
 
-                        addresses.add(myAddress);
+                        addresses.add(neatAddress);
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(InvoiceCreator.this,R.layout.my_spinner_layout,addresses);
                     adapter.setNotifyOnChange(true); //only need to call this once
@@ -244,8 +272,8 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
 
         if(validationPass) {
             //assigning Contact Details
-            String userAddressString = "no address";
-            String recAddressString = "no address";
+            String userAddressString = "";
+            String recAddressString = "";
             if (userAddress.getSelectedItem() != null) {
                 userAddressString = userAddress.getSelectedItem().toString();
             }
@@ -269,6 +297,11 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
                     String.valueOf(invoiceNo.getText()),
                     String.valueOf(issueDate.getText()),
                     String.valueOf(dueDate.getText()));
+            if(savedContacts==null){
+                db.saveUserDetails(contacts);
+            }else{
+                db.updateUserDetails(contacts);
+            }
             //sending object across
             Intent passInvoiceData = new Intent(this, StandardTableCreator.class);
             passInvoiceData.putExtra("InvoiceData", invObj);

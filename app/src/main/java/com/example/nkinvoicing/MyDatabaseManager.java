@@ -44,6 +44,14 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
     private static final String UNIQUE_INVOICE_CODE ="UNIQUE_INVOICE_CODE" ;
     private static final String UNIQUE_CONTACTS_CODE ="UNIQUE_CONTACTS_CODE" ;
     private static final String IMAGEURI ="IMAGEURI" ;
+    private static final String USER_DETAILS_TABLE ="USER_DETAILS_TABLE" ;
+    private static final String USER_SAVED_COMPANY = "USER_SAVED_COMPANY";
+    private static final String USER_SAVED_COMPID = "USER_SAVED_COMPID";
+    private static final String USER_SAVED_TEL ="USER_SAVED_TEL" ;
+    private static final String USER_SAVED_POSTCODE ="USER_SAVED_POSTCODE" ;
+    private static final String USER_SAVED_EMAIL ="USER_SAVED_EMAIL" ;
+    private static final String USER_SAVED_IMAGEURI ="USER_SAVED_IMAGEURI";
+    private static final String SAVED_CONTACTS_CODE = "SAVED_CONTACTS_CODE";
 
     public MyDatabaseManager(@Nullable Context context) {
         super(context, "invoices.db", null, 1);
@@ -52,6 +60,7 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String createInvoiceTable= "CREATE TABLE " + INVOICES_TABLE + "( "+
                 UNIQUE_INVOICE_CODE + " PRIMARY KEY, " +
                 INVOICE_NO_COLUMN + " INT, " +
@@ -60,6 +69,15 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
                 PAID_COLUMN + " BOOL, " +
                 IMAGEURI + " TEXT, " +
                 CONTACTS + " TEXT )";
+
+        String createUserDetailsTable= "CREATE TABLE " + USER_DETAILS_TABLE + "( "+
+                SAVED_CONTACTS_CODE + " PRIMARY KEY, " +
+                USER_SAVED_COMPANY + " TEXT, " +
+                USER_SAVED_COMPID + " INT, " +
+                USER_SAVED_TEL + " TEXT, " +
+                USER_SAVED_POSTCODE + " TEXT, " +
+                USER_SAVED_EMAIL + " BOOL, " +
+                USER_SAVED_IMAGEURI + " TEXT )";
 
         String createContactsTable= "CREATE TABLE " + CONTACTS_TABLE + "( " +
                 UNIQUE_CONTACTS_CODE + " PRIMARY KEY, " +
@@ -86,11 +104,70 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
         db.execSQL(createItemsTable);
         db.execSQL(createContactsTable);
         db.execSQL(createInvoiceTable);
+        db.execSQL(createUserDetailsTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+    public Contacts getUserSavedDetails(){
+        Contacts userSavedContacts=new Contacts("userDetails");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlStatement ="SELECT * FROM " + USER_DETAILS_TABLE;
+        Cursor cursor = db.rawQuery(sqlStatement,null);
+        if(cursor.moveToFirst()){
+            userSavedContacts.userCompany=cursor.getString(cursor.getColumnIndex(USER_SAVED_COMPANY));
+            userSavedContacts.userPostcode=cursor.getString(cursor.getColumnIndex(USER_SAVED_POSTCODE));
+            userSavedContacts.userTel=cursor.getString(cursor.getColumnIndex(USER_SAVED_TEL));
+            userSavedContacts.userCompanyID=cursor.getString(cursor.getColumnIndex(USER_SAVED_COMPID));
+            userSavedContacts.userEmail=cursor.getString(cursor.getColumnIndex(USER_SAVED_EMAIL));
+            userSavedContacts.userLogo=cursor.getString(cursor.getColumnIndex(USER_SAVED_IMAGEURI));
+        }else{
+            cursor.close();
+            db.close();
+            return null;
+        }
+        cursor.close();
+        db.close();
+        return userSavedContacts;
+    }
+    public boolean saveUserDetails(Contacts c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentContacts = new ContentValues();
+        //____________SAVING CONTACTS________________________________________
+        contentContacts.put(SAVED_CONTACTS_CODE,"userDetails");
+        contentContacts.put(USER_SAVED_COMPANY, c.userCompany);
+        contentContacts.put(USER_SAVED_POSTCODE, c.userPostcode);
+        contentContacts.put(USER_SAVED_TEL, c.userTel);
+        contentContacts.put(USER_SAVED_COMPID, c.userCompanyID);
+        contentContacts.put(USER_SAVED_EMAIL, c.userEmail);
+
+        db.insert(USER_DETAILS_TABLE, null, contentContacts);
+        db.close();
+        return true;
+    }
+    public Boolean updateUserDetails(Contacts c) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentContacts = new ContentValues();
+        //Updating CONTACTS________________________________________
+        contentContacts.put(SAVED_CONTACTS_CODE,"userDetails");
+        contentContacts.put(USER_SAVED_COMPANY, c.userCompany);
+        contentContacts.put(USER_SAVED_POSTCODE, c.userPostcode);
+        contentContacts.put(USER_SAVED_TEL, c.userTel);
+        contentContacts.put(USER_SAVED_COMPID, c.userCompanyID);
+        contentContacts.put(USER_SAVED_EMAIL, c.userEmail);
+        Boolean result = (db.update(USER_DETAILS_TABLE, contentContacts, SAVED_CONTACTS_CODE+"='"+"userDetails"+"';", null))>0;
+        db.close();
+        return true;
+    }
+    public Boolean updateUserLogo(String uri) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentContacts = new ContentValues();
+        contentContacts.put(USER_SAVED_IMAGEURI,uri);
+        Boolean result = (db.update(USER_DETAILS_TABLE, contentContacts, SAVED_CONTACTS_CODE+"='"+"userDetails"+"';", null))>0;
+        db.close();
+        return result;
     }
 
     public List<InvoiceData> getAllInvoices(){
@@ -303,6 +380,23 @@ public class MyDatabaseManager extends SQLiteOpenHelper {
     public boolean hasInvoices() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor mCursor = db.rawQuery("SELECT * FROM " + INVOICES_TABLE, null);
+
+        if (mCursor.getCount()==0)
+        {
+            // I AM EMPTY
+            db.close();
+            return false;
+
+        } else
+        {
+            // proceed
+            db.close();
+            return true;
+        }
+    }
+    public boolean hasSavedDetails() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor mCursor = db.rawQuery("SELECT * FROM " + USER_DETAILS_TABLE, null);
 
         if (mCursor.getCount()==0)
         {
