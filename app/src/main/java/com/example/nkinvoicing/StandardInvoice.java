@@ -49,6 +49,7 @@ public class StandardInvoice extends AppCompatActivity {
     MyDatabaseManager db;
     Boolean saved;
     private ImageView paidStatusImage;
+    Contacts savedContacts;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +63,10 @@ public class StandardInvoice extends AppCompatActivity {
             if(saved==false) {
                 if(invData.logoImage!=null) {
                     db.updateUserLogo(invData.logoImage.toString());
+                }else{
+                    if(savedContacts.userLogo!=null && (!savedContacts.userLogo.equals(""))){
+                        invData.logoImage=URI.create(savedContacts.userLogo);
+                    }
                 }
                 db.saveInvoiceToDB(invData);
                 saved=true;
@@ -129,7 +134,7 @@ public class StandardInvoice extends AppCompatActivity {
            Log.e("uriback",invData.logoImage.toString() );
                 logo.setImageURI(Uri.parse(invData.logoImage.toString()));
         }else{
-           Contacts savedContacts=db.getUserSavedDetails();
+            savedContacts=db.getUserSavedDetails();
            if(savedContacts!=null){
                if(savedContacts.userLogo!=null && savedContacts.userLogo!="") {
                    logo.setImageURI(Uri.parse(savedContacts.userLogo));
