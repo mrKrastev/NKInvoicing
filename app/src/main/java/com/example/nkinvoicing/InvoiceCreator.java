@@ -124,7 +124,7 @@ public class InvoiceCreator extends AppCompatActivity implements DatePickerDialo
     private void getAddresses(final String s, String postcode) {
         final List<String> addresses=new ArrayList<>();
         //do api work here
-        CharSequence apiKey="MPvyb__L3k6lYD96NReROQ30332";
+        CharSequence apiKey="WeLEpmt7fkmv4TECnEVsBA30681";
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(InvoiceCreator.this);
         String url ="https://api.getAddress.io/find/"+postcode+"?api-key="+apiKey;
