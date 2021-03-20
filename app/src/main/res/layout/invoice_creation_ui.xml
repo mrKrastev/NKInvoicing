@@ -221,10 +221,10 @@
 
             <EditText
                 android:id="@+id/invoiceNoInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="11dp"
+                android:layout_width="182dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="154dp"
+                android:layout_marginTop="12dp"
                 android:ems="10"
                 android:hint="Invoice No eg. 0001"
                 android:inputType="number"
@@ -234,12 +234,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/issueDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="104dp"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="Issue Date eg. 21/12/2021"
                 android:inputType="text"
                 android:minWidth="227dp"
@@ -249,12 +249,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/invoiceNoInput" />
 
             <EditText
-                android:enabled="false"
                 android:id="@+id/dueDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="104dp"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="Due Date eg. 01/01/2022"
                 android:inputType="text"
                 android:minWidth="227dp"
@@ -404,6 +404,51 @@
                 app:layout_constraintStart_toEndOf="@+id/dueDateInput"
                 app:layout_constraintTop_toBottomOf="@+id/issueDateBtn"
                 app:srcCompat="@drawable/icon_calendar_green" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="Invoice Number:"
+                android:textColor="#00BFA5"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/invoiceNoInput"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="68dp"
+                android:layout_marginEnd="8dp"
+                android:text="Issue Date:"
+                android:textColor="#00BFA5"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/issueDateInput"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="112dp"
+                android:layout_marginEnd="8dp"
+                android:text="Due Date:"
+                android:textColor="#00BFA5"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/dueDateInput"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
